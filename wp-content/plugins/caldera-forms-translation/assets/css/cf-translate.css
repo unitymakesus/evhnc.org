@@ -1,0 +1,39 @@
+p.submit{ display:inline;float:left;}
+span#cf-translations-spinner {
+    margin-top: 35px;
+    padding-top: 20px;
+}
+p.cf-translations-notice {
+    display: inline-block;
+    padding: 4px;
+    border-radius: 4px;
+}
+p.cf-translations-success {
+    background: #a3bf61;
+    color: #fff;
+}
+p.cf-translations-error {
+    background: #ff0000;
+    color: #fff;
+}
+li.cf-translations-notice-wrap{
+    margin-top: -5px;
+}
+.caldera-editor-header {
+    height: 50px !important;
+}
+li.caldera-editor-logo {
+    margin-top: 6px !important;
+}
+#cf-translate-add-language-button {
+    background: #fafafa;
+    border-color: #999;
+    color: #23282d;
+}
+
+.cf-translate-green{
+    background: #a3bf61;
+}
+.cf-translate-red {
+    background: #ff0000;
+}

@@ -1,0 +1,155 @@
+/*
+Theme Name:     EVH Theme
+Description:    Habitat Progression Child Theme
+Author:         Unity Digital Agency
+Author URI:     http://unitymakes.us/
+Template:       habitat-progression
+
+*/
+
+@font-face {
+  font-family: 'Sansita';
+  src: url('fonts/Sansita-Regular.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Sansita-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/Sansita-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/Sansita-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/Sansita-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Unna';
+  src: url('fonts/Unna-Regular.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Unna-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/Unna-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/Unna-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/Unna-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Unna';
+  src: url('fonts/Unna-Bold.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Unna-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/Unna-Bold.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/Unna-Bold.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/Unna-Bold.ttf')  format('truetype'); /* Safari, Android, iOS */
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Unna';
+  src: url('fonts/Unna-Italic.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Unna-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/Unna-Italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/Unna-Italic.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/Unna-Italic.ttf')  format('truetype'); /* Safari, Android, iOS */
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Unna';
+  src: url('fonts/Unna-BoldItalic.eot'); /* IE9 Compat Modes */
+  src: url('fonts/Unna-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/Unna-BoldItalic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/Unna-BoldItalic.woff') format('woff'), /* Pretty Modern Browsers */
+       url('fonts/Unna-BoldItalic.ttf')  format('truetype'); /* Safari, Android, iOS */
+  font-weight: bold;
+  font-style: italic;
+}
+
+html, body {
+  font-family: 'Unna', serif;
+  font-size: 18px;
+}
+
+#content-pro h2 {
+  font-family: 'Sansita', sans-serif;
+  font-size: 36px;
+  color: #3A3F69;
+}
+
+#content-pro h3 {
+  font-family: 'Unna', serif;
+  font-weight: bold;
+  font-size: 36px;
+  color: #3A3F69;
+}
+
+#content-pro h4 {
+  font-family: 'Sansita', sans-serif;
+  font-size: 32px;
+  color: #3A3F69;
+}
+
+#content-pro h5 {
+  font-family: 'Unna', serif;
+  font-size: 32px;
+  color: #3A3F69;
+}
+
+#content-pro h6 {
+  font-family: 'Sansita', sans-serif;
+  font-size: 24px;
+  color: #3A3F69;
+}
+
+ul, ol {
+  margin-left: 24px;
+}
+
+.habitat-header-left .widget {
+  font-family: 'Sansita', sans-serif;
+}
+
+#habitat-progression-header-top#habitat-progression-header-top {
+  border-bottom: none;
+}
+
+.sf-menu.sf-menu a {
+  font-family: 'Sansita', sans-serif;
+}
+
+#page-title-pro#page-title-pro {
+  padding-top: 10px;
+}
+
+#page-title-pro#page-title-pro h1 {
+  font-family: 'Sansita', sans-serif;
+  font-weight: normal;
+}
+
+#page-title-pro#page-title-pro h4 {
+  font-family: 'Unna', serif;
+  color: #fff;
+  font-size: 48px;
+}
+
+#content-pro {
+  font-size: 20px;
+  font-family: "Unna", serif;
+}
+
+#content-pro a {
+  text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.vertical-center img {
+  vertical-align: middle;
+}
+
+.mlp_language_box ul {
+  margin: 0;
+}
+
+.mlp_language_box.mlp_language_box a {
+  text-decoration: underline;
+}
