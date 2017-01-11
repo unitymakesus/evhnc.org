@@ -67,6 +67,16 @@ html, body {
   font-size: 18px;
 }
 
+#content-pro {
+  font-size: 20px;
+  font-family: "Unna", serif;
+  color: rgba(15, 14, 7, 0.85);
+}
+
+#content-pro a {
+  text-decoration: underline;
+}
+
 #content-pro h2 {
   font-family: 'Sansita', sans-serif;
   font-size: 36px;
@@ -114,6 +124,10 @@ ul, ol {
   font-family: 'Sansita', sans-serif;
 }
 
+.sf-menu li.highlight-button a {
+  padding-bottom: 16px;
+}
+
 #page-title-pro#page-title-pro {
   padding-top: 10px;
 }
@@ -129,15 +143,6 @@ ul, ol {
   font-size: 48px;
 }
 
-#content-pro {
-  font-size: 20px;
-  font-family: "Unna", serif;
-}
-
-#content-pro a {
-  text-decoration: underline;
-}
-
 .text-center {
   text-align: center;
 }
@@ -151,9 +156,63 @@ ul, ol {
 }
 
 .mlp_language_box.mlp_language_box a {
-  text-decoration: underline;
+  background: #BD1550;
+  border-radius: 40px;
+  padding: 5px 15px 8px;
+  font-family: "Sansita", sans-serif;
+  text-transform: uppercase;
+  transition: all .2s ease;
+}
+
+.mlp_language_box.mlp_language_box a:hover,
+.mlp_language_box.mlp_language_box a:focus,
+.mlp_language_box.mlp_language_box a:active {
+  background: #8B0F3A;
+}
+
+.mlp_language_box.mlp_language_box a.current-language-item {
+  cursor: default;
+  background: #670B2B;
 }
 
 .home .mlp-quicklinks {
   display: none;
+}
+
+div.iframe iframe {
+  max-width: 100%;
+}
+
+img.footer-logo {
+  max-width: 176px;
+  margin: 0 auto;
+  display: block;
+}
+
+footer#site-footer h4.widget-title.widget-title {
+  color: white;
+  font-family: "Sansita", sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: none;
+}
+
+footer#site-footer a.footer-button {
+  background: #F8CA00;
+  border-radius: 40px;
+  padding: 5px 15px 8px;
+  font-family: "Sansita", sans-serif;
+  text-transform: uppercase;
+  transition: all .2s ease;
+  color: #383F68;
+}
+
+footer#site-footer a.footer-button:hover,
+footer#site-footer a.footer-button:focus,
+footer#site-footer a.footer-button:active {
+  background: #F9D63C;
+}
+
+.inline-buttons iframe {
+  vertical-align: bottom;
 }
