@@ -23,8 +23,8 @@ function pro_elements_textdomain() {
  */
 /*** Registering Custom Post Type ***/
 add_action('init', 'progression_portfolio_init');
-function progression_portfolio_init() {	
-		 
+function progression_portfolio_init() {
+
  	register_post_type(
  		'program',
  		array(
@@ -35,6 +35,7 @@ function progression_portfolio_init() {
  			'menu_icon' => 'dashicons-awards',
  			'public' => true,
  			'has_archive' => true,
+			'hierarchical' => true,
  			'rewrite' => array('slug' => 'program-item'),
  			'supports' => array('title', 'editor', 'thumbnail','comments', 'excerpt'),
  			'can_export' => true,
@@ -42,14 +43,14 @@ function progression_portfolio_init() {
  	);
 
  	register_taxonomy(
- 		'program-category', 'program', 
- 		array('hierarchical' => true, 
- 		'label' => __( "Program Categories", "pro-elements" ), 
- 		'query_var' => true, 
+ 		'program-category', 'program',
+ 		array('hierarchical' => true,
+ 		'label' => __( "Program Categories", "pro-elements" ),
+ 		'query_var' => true,
  		'rewrite' => array('slug' => 'programs-category'),
  		)
  	 );
-	 
+
 
 }
 
@@ -62,7 +63,7 @@ function progression_studios_google_maps_customizer( $wp_customize ) {
 		'priority'    => 800,
        'title'       => esc_html__( 'Google Maps', 'pro-elements' ),
     ) );
-	 
+
 	$wp_customize->add_setting( 'progression_studios_google_maps_api' ,array(
 		'default' =>  '',
 		'sanitize_callback' => 'progression_studios_google_maps_sanitize_text',
@@ -74,7 +75,7 @@ function progression_studios_google_maps_customizer( $wp_customize ) {
 		'type' => 'text',
 		'priority'   => 10,
 		)
-	
+
 	);
 }
 
@@ -87,14 +88,14 @@ function progression_studios_google_maps_sanitize_text( $input ) {
 
 add_action( 'wp_enqueue_scripts', 'google_maps_pro_script', 20, 1 );
 function google_maps_pro_script() {
-	
-	
+
+
    if ( get_theme_mod( 'progression_studios_google_maps_api') ) {
        $progression_studios_google_api_url =  '?key='. get_theme_mod('progression_studios_google_maps_api');
 	} else {
 		$progression_studios_google_api_url = '';
 	}
-	
+
 	wp_register_script( 'google_maps_pro', 'https://maps.google.com/maps/api/js' . $progression_studios_google_api_url, 1 );
 	wp_register_script( 'gomap_pro', get_template_directory_uri() . '/js/jquery.gomap-1.3.3.min.js', array( 'jquery' ), '20120206', false );
 }

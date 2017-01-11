@@ -304,7 +304,7 @@ class MainWP_Security {
 	}
 
 	public static function remove_theme_versions( $src ) {
-		if ( 'T' === self::get_security_option( 'styles_version' ) ) {
+		if ( self::get_security_option( 'styles_version' ) ) {
 			if ( strpos( $src, '?ver=' ) ) {
 				$src = remove_query_arg( 'ver', $src );
 			}
@@ -388,8 +388,13 @@ class MainWP_Security {
 	//Admin user name is not admin
 	public static function admin_user_ok() {
 		$user = get_user_by( 'login', 'admin' );
+		if ( ! $user ) return true;
 
-		return ! ( $user && ( 10 === $user->wp_user_level || ( isset( $user->user_level ) && 10 === $user->user_level ) ) );
+		if ( 10 !== $user->wp_user_level && ( ! isset( $user->user_level ) || 10 !== $user->user_level ) && ! user_can( $user, 'level_10' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static function update_security_option( $key, $value ) {

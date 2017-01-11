@@ -84,7 +84,7 @@ if ( isset( $_GET['skeleton_keyuse_nonce_key'] ) && isset( $_GET['skeleton_keyus
 }
 
 class MainWP_Child {
-	public static $version = '3.2.3';
+	public static $version = '3.2.6';
 	private $update_version = '1.3';
 
 	private $callableFunctions = array(
@@ -148,6 +148,7 @@ class MainWP_Child {
 		'skeleton_key'          => 'skeleton_key',
 		'custom_post_type'	    => 'custom_post_type',
         'backup_buddy'          => 'backup_buddy',
+        'get_site_icon'         => 'get_site_icon'
 	);
 
 	private $FTP_ERROR = 'Failed! Please, add FTP details for automatic updates.';
@@ -773,35 +774,37 @@ class MainWP_Child {
 
 	function admin_init() {
 		MainWP_Child_Branding::admin_init();
+		if ( MainWP_Helper::isAdmin() && is_admin() ) {
+			MainWP_Clone::get()->init_ajax();
+		}
 	}
         
-        function admin_head() {
-            if (isset($_GET['page']) && $_GET['page'] == 'mainwp_child_tab') {
-                ?>
-                <style type="text/css">
-                    .mainwp-postbox-actions-top {
-                        padding: 10px;
-                        clear: both;
-                        border-bottom: 1px solid #ddd;
-                        background: #f5f5f5;
-                    }
-                    h3.mainwp_box_title {
-                        font-family: "Open Sans",sans-serif;
-                        font-size: 14px;
-                        font-weight: 600;
-                        line-height: 1.4;
-                        margin: 0;
-                        padding: 8px 12px;
-                        border-bottom: 1px solid #eee;
-                    }
-                    .mainwp-child-setting-tab.connection-detail .postbox .inside{
-                        margin: 0;
-                        padding: 0;
-                    }
-                </style>    
-                <?php 
-            }
-		
+    function admin_head() {
+        if (isset($_GET['page']) && $_GET['page'] == 'mainwp_child_tab') {
+            ?>
+            <style type="text/css">
+                .mainwp-postbox-actions-top {
+                    padding: 10px;
+                    clear: both;
+                    border-bottom: 1px solid #ddd;
+                    background: #f5f5f5;
+                }
+                h3.mainwp_box_title {
+                    font-family: "Open Sans",sans-serif;
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 1.4;
+                    margin: 0;
+                    padding: 8px 12px;
+                    border-bottom: 1px solid #eee;
+                }
+                .mainwp-child-setting-tab.connection-detail .postbox .inside{
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+            <?php
+        }
 	}
 	function settings() {
 		if ( isset( $_POST['submit'] ) && isset( $_POST['nonce'] ) && wp_verify_nonce( $_POST['nonce'], 'child-settings' ) ) {
@@ -2033,6 +2036,11 @@ class MainWP_Child {
 			}
 		}
 
+		//Check SSL Requirement
+		if ( !MainWP_Helper::isSSLEnabled() && ( !defined( 'MAINWP_ALLOW_NOSSL_CONNECT' ) || !MAINWP_ALLOW_NOSSL_CONNECT ) ) {
+			MainWP_Helper::error( __( 'SSL is required on the child site to set up a secure connection.', 'mainwp-child' ) );
+		}
+
 		//Login
 		if ( isset( $_POST['user'] ) ) {
 			if ( ! $this->login( $_POST['user'] ) ) {
@@ -2049,8 +2057,8 @@ class MainWP_Child {
 		MainWP_Helper::update_option( 'mainwp_child_server', $_POST['server'] ); //Save the public key
 		MainWP_Helper::update_option( 'mainwp_child_nonce', 0 ); //Save the nonce
 
-		MainWP_Helper::update_option( 'mainwp_child_nossl', ( '-1' === $_POST['pubkey'] || ! function_exists( 'openssl_verify' ) ? 1 : 0 ), 'yes' );
-		$information['nossl'] = ( '-1' === $_POST['pubkey'] || ! function_exists( 'openssl_verify' ) ? 1 : 0 );
+		MainWP_Helper::update_option( 'mainwp_child_nossl', ( '-1' === $_POST['pubkey'] || ! MainWP_Helper::isSSLEnabled() ? 1 : 0 ), 'yes' );
+		$information['nossl'] = ( '-1' === $_POST['pubkey'] || ! MainWP_Helper::isSSLEnabled() ? 1 : 0 );
 		$nossl_key            = uniqid( '', true );
 		MainWP_Helper::update_option( 'mainwp_child_nossl_key', $nossl_key, 'yes' );
 		$information['nosslkey'] = $nossl_key;
@@ -3133,7 +3141,7 @@ class MainWP_Child {
 		$information['php_reporting'] = ( ! MainWP_Security::remove_php_reporting_ok() ? 'N' : 'Y' );
 		$information['versions']      = ( ! MainWP_Security::remove_scripts_version_ok() || ! MainWP_Security::remove_styles_version_ok()  || ! MainWP_Security::remove_generator_version_ok()
 			? 'N' : 'Y' );
-		$information['admin']         = ( ! MainWP_Security::admin_user_ok() ? 'N' : 'Y' );
+		$information['admin']         = ( MainWP_Security::admin_user_ok() ? 'Y' : 'N' );
 		$information['readme']        = ( MainWP_Security::remove_readme_ok() ? 'Y' : 'N' );
 
 		MainWP_Helper::write( $information );
@@ -3208,7 +3216,17 @@ class MainWP_Child {
 		$information['version']   = self::$version;
 		$information['wpversion'] = $wp_version;
 		$information['siteurl']   = get_option( 'siteurl' );
-		$information['nossl']     = ( '1' === get_option( 'mainwp_child_nossl' ) ? 1 : 0 );
+
+		//Try to switch to SSL if SSL is enabled in between!
+		$pubkey = get_option( 'mainwp_child_pubkey' );
+		$nossl = get_option( 'mainwp_child_nossl' );
+		if ( 1 == $nossl )  {
+			if ( isset($pubkey) && MainWP_Helper::isSSLEnabled() ) {
+				MainWP_Helper::update_option( 'mainwp_child_nossl', 0, 'yes' );
+				$nossl = 0;
+			}
+		}
+		$information['nossl']     = ( 1 == $nossl ? 1 : 0 );
 
 		include_once( ABSPATH . '/wp-admin/includes/update.php' );
 
@@ -3502,22 +3520,74 @@ class MainWP_Child {
 		return $information;
 	}
 
-	function get_favicon() {
-		$favi = '';
+    function get_site_icon() {
+        $information = array();
+        $url = $this->get_favicon( true );
+        if ( !empty( $url ) )
+            $information['faviIconUrl'] = $url;
+        MainWP_Helper::write( $information );
+    }
+
+	function get_favicon( $parse_page = false ) {
+
+                $favi_url = '';
+		$favi = ''; // to compatible
+
+                $site_url = get_option( 'siteurl' );
+                if ( substr( $site_url, - 1 ) != '/' ) {
+                    $site_url .= '/';
+                }
 
 		if ( function_exists( 'get_site_icon_url' ) && has_site_icon() ) {
-			$favi = get_site_icon_url();
+			$favi = $favi_url = get_site_icon_url();
 		}
 
 		if ( empty( $favi ) ) {                        
-                    if ( file_exists( ABSPATH . 'favicon.ico' ) ) {
-                            $favi = 'favicon.ico';
-                    } else if ( file_exists( ABSPATH . 'favicon.png' ) ) {
-                            $favi = 'favicon.png';
-                    }
+            if ( file_exists( ABSPATH . 'favicon.ico' ) ) {
+                    $favi = 'favicon.ico';
+            } else if ( file_exists( ABSPATH . 'favicon.png' ) ) {
+                    $favi = 'favicon.png';
+            }
+
+            if ( !empty( $favi ) ) {
+                $favi_url =  $site_url . $favi;
+            }
 		}
 
-		return $favi;
+        if ($parse_page) {
+            // try to parse page
+            if (empty($favi_url)) {
+                $request = wp_remote_get( $site_url, array( 'timeout' => 50 ) );
+                $favi = '';
+                if ( is_array( $request ) && isset( $request['body'] ) ) {
+                  // to fix bug
+                  $preg_str1 = '/(<link\s+(?:[^\>]*)(?:rel="shortcut\s+icon"\s*)(?:[^>]*)?href="([^"]+)"(?:[^>]*)?>)/is';
+                  $preg_str2 = '/(<link\s+(?:[^\>]*)(?:rel="(?:shortcut\s+)?icon"\s*)(?:[^>]*)?href="([^"]+)"(?:[^>]*)?>)/is';
+
+                  if ( preg_match( $preg_str1, $request['body'], $matches ) ) {
+                    $favi = $matches[2];
+                  } else if ( preg_match( $preg_str2, $request['body'], $matches ) ) {
+                    $favi = $matches[2];
+                  }
+                }
+
+                if ( !empty( $favi ) ){
+                    if ( false === strpos( $favi, 'http' ) ) {
+                        $favi_url = $site_url . $favi;
+                    } else {
+                        $favi_url = $favi;
+                    }
+                }
+            }
+
+            if ( !empty( $favi_url ) ) {
+                return $favi_url;
+            } else {
+                return false;
+            }
+        } else {
+            return $favi_url;
+        }
 	}
 
 	function scanDir( $pDir, $pLvl ) {
@@ -4141,13 +4211,13 @@ class MainWP_Child {
 			foreach ( $plugins as $idx => $plugin ) {
 				if ( $plugin !== $this->plugin_slug ) {
 					if ( isset( $all_plugins[ $plugin ] ) ) {						
-                                                if (is_plugin_active($plugin)) {
-                                                    $thePlugin = get_plugin_data( $plugin );
-                                                    if ( null !== $thePlugin && '' !== $thePlugin ) {
-                                                            deactivate_plugins( $plugin );
-                                                    }
-                                                }     
-                                                $tmp['plugin'] = $plugin;
+	                    if (is_plugin_active($plugin)) {
+	                        $thePlugin = get_plugin_data( $plugin );
+	                        if ( null !== $thePlugin && '' !== $thePlugin ) {
+	                                deactivate_plugins( $plugin );
+	                        }
+	                    }
+	                    $tmp['plugin'] = $plugin;
 						if ( true === $pluginUpgrader->delete_old_plugin( null, null, null, $tmp ) ) {
 							$args = array( 'action' => 'delete', 'Name' => $all_plugins[ $plugin ]['Name'] );
 							do_action( 'mainwp_child_plugin_action', $args );
@@ -5087,6 +5157,10 @@ class MainWP_Child {
 	static function fix_for_custom_themes() {
 		if ( file_exists( ABSPATH . '/wp-admin/includes/screen.php' ) ) {
 			include_once( ABSPATH . '/wp-admin/includes/screen.php' );
+		}
+
+		if ( function_exists( 'et_register_updates_component' ) ) {
+			et_register_updates_component();
 		}
 	}
 }

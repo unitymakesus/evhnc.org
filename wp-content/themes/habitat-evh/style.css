@@ -153,3 +153,7 @@ ul, ol {
 .mlp_language_box.mlp_language_box a {
   text-decoration: underline;
 }
+
+.home .mlp-quicklinks {
+  display: none;
+}
