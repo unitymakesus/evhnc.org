@@ -8,9 +8,9 @@ add_filter( 'vc_grid_item_shortcodes', 'my_module_add_grid_shortcodes' );
 function my_module_add_grid_shortcodes( $shortcodes ) {
   $shortcodes['evh_post_content'] = array(
     'name' => __( 'Post Content', 'my-text-domain' ),
-    'base' => 'evh_post_cotnent',
+    'base' => 'evh_post_content',
     'icon' => 'vc_icon-vc-gitem-post-excerpt',
-    'category' => __( 'Content', 'my-text-domain' ),
+    'category' => __( 'Post', 'my-text-domain' ),
     'description' => __( 'Show current post content', 'my-text-domain' ),
     'post_type' => 'vc_grid_item',
   );

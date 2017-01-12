@@ -126,6 +126,21 @@ ul, ol {
 
 .sf-menu li.highlight-button a {
   padding-bottom: 16px;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.sf-menu.sf-menu > li.current_page_parent > a {
+  color: white;
+}
+
+.sf-menu.sf-menu > li.current_page_parent > a:hover {
+  color: #f8ca00;
+}
+
+.sf-menu.sf-menu > li.current-menu-ancestor > a,
+.sf-menu.sf-menu > li.current-menu-item > a {
+  color: #f8ca00;
 }
 
 #page-title-pro#page-title-pro {
@@ -177,6 +192,14 @@ ul, ol {
 
 .home .mlp-quicklinks {
   display: none;
+}
+
+#content-pro .mlp-quicklinks.tr {
+  position: absolute;
+  top: -60px;
+  right: 0;
+  float: none;
+  font-size: 14px;
 }
 
 div.iframe iframe {
