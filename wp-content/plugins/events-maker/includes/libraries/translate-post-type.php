@@ -116,10 +116,8 @@ class WPML_Translate_Post_Type {
 				$force_lang = true;
 
 				if ( $this->plugin === 'Polylang' ) {
-					global $polylang;
-
 					// if "The language is set from content" is enabled
-					$force_lang = (bool) $polylang->options['force_lang'];
+					$force_lang = (bool) PLL()->options['force_lang'];
 				}
 
 				if ( $force_lang === false ) {
@@ -179,17 +177,15 @@ class WPML_Translate_Post_Type {
 				// if "Hide URL language information for default language" option is
 				// set to true the rules has to be different for the default language
 				if ( $this->plugin === 'Polylang' ) {
-					global $polylang;
-
 					// if "The language is set from content" is enabled
-					if ( (bool) $polylang->options['force_lang'] === false ) {
+					if ( (bool) PLL()->options['force_lang'] === false ) {
 						add_permastruct( $post_type . '_' . $lang, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
 					} else {
-						if ( $polylang->options['hide_default'] && $lang == pll_default_language() ) {
+						if ( PLL()->options['hide_default'] && $lang == pll_default_language() ) {
 							add_permastruct( $post_type . '_' . $lang, "{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
 						} else {
 							// if "Keep /language/ in pretty permalinks" is enabled
-							if ( $polylang->options['rewrite'] == 0 && ! ( $polylang->options['hide_default'] && $lang == pll_default_language() ) ) {
+							if ( PLL()->options['rewrite'] == 0 && ! ( PLL()->options['hide_default'] && $lang == pll_default_language() ) ) {
 								add_permastruct( $post_type . '_' . $lang, 'language/' . "%language%/{$args->rewrite['slug']}/%$post_type%", $permastruct_args );
 							} else {
 								add_permastruct( $post_type . '_' . $lang, "%language%/{$args->rewrite['slug']}/%$post_type%", $permastruct_args );

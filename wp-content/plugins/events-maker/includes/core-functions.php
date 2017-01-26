@@ -446,8 +446,11 @@ function em_is_free( $post_id = 0 ) {
 
 	if ( empty( $post_id ) )
 		return false;
+	
+	// meta key not set or set to 1, is free
+	$status = metadata_exists( 'post', $post_id, '_event_free' ) ? get_post_meta( $post_id, '_event_free', true ) : '1';
 
-	return apply_filters( 'em_is_free', ( get_post_meta( (int) $post_id, '_event_free', true ) === '1' ? true : false ), $post_id );
+	return apply_filters( 'em_is_free', ( $status === '1' ? true : false ), $post_id );
 }
 
 /**
@@ -546,18 +549,30 @@ function em_get_country_name( $code = '' ) {
  */
 function em_get_locations( $args = array() ) {
 	$defaults = array(
-		'fields' => 'all'
+		'fields'	 => 'all',
+		'hide_empty' => true
 	);
 	$args = apply_filters( 'em_get_locations_args', array_merge( $defaults, $args ) );
 
 	if ( ! taxonomy_exists( 'event-location' ) )
 		return false;
+	
+	$locations = array();
+	
+	// upcoming event locations
+	if ( ! empty( $args['hide_empty'] ) && Events_Maker()->options['general']['show_past_events'] == false ) {
+		$events = em_get_events( array( 'fields' => 'ids' ) );
+		$locations = wp_get_object_terms( $events, 'event-location', $args );
+	// all locations
+	} else {
+		$locations = get_terms( 'event-location', $args );
+	}
 
-	$locations = get_terms( 'event-location', $args );
-
-	if ( isset( $args['fields'] ) && $args['fields'] === 'all' ) {
-		foreach ( $locations as $id => $location ) {
-			$locations[$id]->location_meta = ( get_option( 'event_location_' . $location->term_taxonomy_id ) ? get_option( 'event_location_' . $location->term_taxonomy_id ) : get_option( 'event_location_' . $location->term_id ) );
+	if ( $locations ) {
+		if ( isset( $args['fields'] ) && $args['fields'] === 'all' ) {
+			foreach ( $locations as $id => $location ) {
+				$locations[$id]->location_meta = ( get_option( 'event_location_' . $location->term_taxonomy_id ) ? get_option( 'event_location_' . $location->term_taxonomy_id ) : get_option( 'event_location_' . $location->term_id ) );
+			}
 		}
 	}
 
@@ -620,18 +635,30 @@ function em_get_locations_for( $post_id = 0 ) {
  */
 function em_get_organizers( $args = array() ) {
 	$defaults = array(
-		'fields' => 'all'
+		'fields'	 => 'all',
+		'hide_empty' => true
 	);
 	$args = apply_filters( 'em_get_organizers_args', array_merge( $defaults, $args ) );
 
 	if ( ! taxonomy_exists( 'event-organizer' ) )
 		return false;
+	
+	$organizers = array();
+	
+	// upcoming event organizers
+	if ( ! empty( $args['hide_empty'] ) && Events_Maker()->options['general']['show_past_events'] == false ) {
+		$events = em_get_events( array( 'fields' => 'ids' ) );
+		$organizers = wp_get_object_terms( $events, 'event-organizer', $args );
+	// all organizers
+	} else {
+		$organizers = get_terms( 'event-organizer', $args );
+	}
 
-	$organizers = get_terms( 'event-organizer', $args );
-
-	if ( isset( $args['fields'] ) && $args['fields'] === 'all' ) {
-		foreach ( $organizers as $id => $organizer ) {
-			$organizers[$id]->organizer_meta = ( get_option( 'event_organizer_' . $organizer->term_taxonomy_id ) ? get_option( 'event_organizer_' . $organizer->term_taxonomy_id ) : get_option( 'event_organizer_' . $organizer->term_id ) );
+	if ( $organizers ) {
+		if ( isset( $args['fields'] ) && $args['fields'] === 'all' ) {
+			foreach ( $organizers as $id => $organizer ) {
+				$organizers[$id]->organizer_meta = ( get_option( 'event_organizer_' . $organizer->term_taxonomy_id ) ? get_option( 'event_organizer_' . $organizer->term_taxonomy_id ) : get_option( 'event_organizer_' . $organizer->term_id ) );
+			}
 		}
 	}
 

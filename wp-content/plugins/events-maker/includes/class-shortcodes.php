@@ -276,7 +276,7 @@ class Events_Maker_Shortcodes {
 			'date_range'		 => 'between',
 			'date_type'			 => 'all',
 			'ticket_type'		 => 'all',
-			'show_past_events'	 => Events_Maker()->options['general']['show_past_events'],
+			'show_past_events'	 => true, // show by default
 			'show_occurrences'	 => Events_Maker()->options['general']['show_occurrences'],
 			'categories'		 => '',
 			'locations'			 => '',

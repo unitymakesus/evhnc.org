@@ -41,7 +41,7 @@ class Events_Maker_Post_Types {
 		);
 
 		$labels_event_locations = array(
-			'name'				 => _x( 'Locations', 'taxonomy general name', 'events-maker' ),
+			'name'				 => _x( 'Event Locations', 'taxonomy general name', 'events-maker' ),
 			'singular_name'		 => _x( 'Event Location', 'taxonomy singular name', 'events-maker' ),
 			'search_items'		 => __( 'Search Event Locations', 'events-maker' ),
 			'all_items'			 => __( 'All Event Locations', 'events-maker' ),
@@ -146,7 +146,7 @@ class Events_Maker_Post_Types {
 
 		if ( Events_Maker()->options['general']['use_organizers'] ) {
 			$labels_event_organizers = array(
-				'name'				 => _x( 'Organizers', 'taxonomy general name', 'events-maker' ),
+				'name'				 => _x( 'Event Organizers', 'taxonomy general name', 'events-maker' ),
 				'singular_name'		 => _x( 'Event Organizer', 'taxonomy singular name', 'events-maker' ),
 				'search_items'		 => __( 'Search Event Organizers', 'events-maker' ),
 				'all_items'			 => __( 'All Event Organizers', 'events-maker' ),
@@ -200,7 +200,7 @@ class Events_Maker_Post_Types {
 			'new_item'			 => __( 'New Event', 'events-maker' ),
 			'view_item'			 => __( 'View Event', 'events-maker' ),
 			'items_archive'		 => __( 'Event Archive', 'events-maker' ),
-			'search_items'		 => __( 'Search Event', 'events-maker' ),
+			'search_items'		 => __( 'Search Events', 'events-maker' ),
 			'not_found'			 => __( 'No events found', 'events-maker' ),
 			'not_found_in_trash' => __( 'No events found in trash', 'events-maker' ),
 			'parent_item_colon'	 => ''

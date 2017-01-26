@@ -32,6 +32,8 @@ $classes = apply_filters( 'em_loop_event_organizer_classes', array( 'vcard', 'te
 		<?php
 		/**
 		 * em_before_loop_event_organizer_title hook
+		 * 
+		 * @hooked em_display_organizer_image - 10
 		 */
 		do_action( 'em_before_loop_event_organizer_title' );
 		?>

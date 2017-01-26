@@ -32,6 +32,8 @@ $classes = apply_filters( 'em_loop_event_location_classes', array( 'h-adr', 'ter
 		<?php
 		/**
 		 * em_before_loop_event_location_title hook
+		 * 
+		 * @hooked em_display_location_image - 10
 		 */
 		do_action( 'em_before_loop_event_location_title' );
 		?>

@@ -582,10 +582,12 @@ class Events_Maker_Metaboxes {
 			<div id="event_tickets">
 			' . $html_t . '
 			</div>
-			<div>
-				<label for="event_tickets_url">' . __( 'Buy tickets URL', 'events-maker' ) . ':</label> <input id="event_tickets_url" class="regular-text" type="text" name="event_tickets_url" value="' . esc_url( get_post_meta( $post->ID, '_event_tickets_url', true ) ) . '" />
-			</div>
 		</div>';
+		
+		$html .= '
+			<div>
+				<label for="event_tickets_url">' . __( 'RSVP URL', 'events-maker' ) . ':</label> <input id="event_tickets_url" class="regular-text" type="text" name="event_tickets_url" value="' . esc_url( get_post_meta( $post->ID, '_event_tickets_url', true ) ) . '" />
+			</div>';
 
 		do_action( 'em_before_metabox_event_tickets' );
 
@@ -619,8 +621,8 @@ class Events_Maker_Metaboxes {
 				delete_transient( 'em_calendar_query-' . $language['language_code'] );
 			}
 		// Polylang support
-		} elseif ( class_exists( 'Polylang' ) && function_exists( 'pll_default_language' ) ) {
-			$language = PLL()->model->get_post_language( $post_ID );
+		} elseif ( class_exists( 'Polylang' ) && function_exists( 'PLL' ) ) {
+			$language = PLL()->model->post->get_language( $post_ID );
 
 			if ( $language )
 				delete_transient( 'em_calendar_query-' . $language->slug );
@@ -798,8 +800,6 @@ class Events_Maker_Metaboxes {
 			$tickets = array();
 
 			if ( ! isset( $_POST['event_free'] ) ) {
-				$ticket_url = (isset( $_POST['event_tickets_url'] ) ? $_POST['event_tickets_url'] : '');
-
 				if ( isset( $_POST['event_tickets'] ) && is_array( $_POST['event_tickets'] ) && ! empty( $_POST['event_tickets'] ) ) {
 					foreach ( $_POST['event_tickets'] as $id => $ticket ) {
 						$tickets_fields = array();
@@ -833,6 +833,9 @@ class Events_Maker_Metaboxes {
 				update_post_meta( $post_ID, '_event_tickets', $tickets );
 				update_post_meta( $post_ID, '_event_tickets_url', '' );
 			}
+			
+			// rsvp url
+			$ticket_url = (isset( $_POST['event_tickets_url'] ) ? $_POST['event_tickets_url'] : '');
 		}
 
 		// event display options validation				

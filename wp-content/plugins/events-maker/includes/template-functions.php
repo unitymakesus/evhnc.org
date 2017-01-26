@@ -131,8 +131,12 @@ if ( ! function_exists( 'em_display_event_categories' ) ) {
 
 		if ( empty( $post_id ) )
 			return false;
+		
+		$taxonomy_obj = get_taxonomy( 'event-category' );
+		$tax_label = apply_filters( 'em_display_event_categories_label', $taxonomy_obj->labels->menu_name );
 
-		$categories = get_the_term_list( $post_id, 'event-category', __( '<strong>Category: </strong>', 'events-maker' ), ', ', '' );
+		$categories = get_the_term_list( $post_id, 'event-category', sprintf( '<strong>%s: </strong>', $tax_label ), ', ', '' );
+		
 		if ( $categories && ! is_wp_error( $categories ) ) {
 			?>
 			<div class="entry-meta">
@@ -159,8 +163,12 @@ if ( ! function_exists( 'em_display_event_tags' ) ) {
 		
 		if ( ! taxonomy_exists( 'event-tag' ) )
 			return false;
+		
+		$taxonomy_obj = get_taxonomy( 'event-tag' );
+		$tax_label = apply_filters( 'em_display_event_tags_label', $taxonomy_obj->labels->menu_name );
 
-		$tags = get_the_term_list( $post_id, 'event-tag', __( '<strong>Tags: </strong>', 'events-maker' ), ', ', '' );
+		$tags = get_the_term_list( $post_id, 'event-tag', sprintf( '<strong>%s: </strong>', $tax_label ), ', ', '' );
+		
 		if ( $tags && ! is_wp_error( $tags ) ) {
 			?>
 			<footer class="entry-footer">
@@ -193,9 +201,12 @@ if ( ! function_exists( 'em_display_event_locations' ) ) {
 
 		if ( empty( $locations ) || is_wp_error( $locations ) )
 			return false;
+		
+		$taxonomy_obj = get_taxonomy( 'event-location' );
+		$tax_label = apply_filters( 'em_display_event_locations_label', $taxonomy_obj->labels->menu_name );
+		
+		$output = get_the_term_list( $post_id, 'event-location', sprintf( '<strong>%s: </strong>', $tax_label ), ', ', '' );
 		?>
-
-		<?php $output = get_the_term_list( $post_id, 'event-location', __( '<strong>Location: </strong>', 'events-maker' ), ', ', '' ); ?>
 
 		<div class="entry-meta">
 
@@ -208,7 +219,7 @@ if ( ! function_exists( 'em_display_event_locations' ) ) {
 				<?php if ( isset( $event_display_options['display_location_details'] ) && $event_display_options['display_location_details'] == true ) : ?>
 
 					<?php
-					$output = __( '<strong>Location: </strong>', 'events-maker' );
+					$output = sprintf( '<strong>%s: </strong>', $tax_label );
 
 					foreach ( $locations as $term ) :
 
@@ -284,7 +295,10 @@ if ( ! function_exists( 'em_display_event_organizers' ) ) {
 		if ( empty( $organizers ) || is_wp_error( $organizers ) )
 			return false;
 		
-		$output = get_the_term_list( $post_id, 'event-organizer', __( '<strong>Organizer: </strong>', 'events-maker' ), ', ', '' );
+		$taxonomy_obj = get_taxonomy( 'event-organizer' );
+		$tax_label = apply_filters( 'em_display_event_organizers_label', $taxonomy_obj->labels->menu_name );
+		
+		$output = get_the_term_list( $post_id, 'event-organizer', sprintf( '<strong>%s: </strong>', $tax_label ), ', ', '' );
 		?>
 
 		<div class="entry-meta">
@@ -298,7 +312,7 @@ if ( ! function_exists( 'em_display_event_organizers' ) ) {
 					<?php if ( isset( $event_display_options['display_organizer_details'] ) && $event_display_options['display_organizer_details'] == true ) : ?>
 
 						<?php
-						$output = __( '<strong>Organizer: </strong>', 'events-maker' );
+						$output = sprintf( '<strong>%s: </strong>', $tax_label );
 
 						foreach ( $organizers as $term ) :
 
@@ -356,7 +370,7 @@ if ( ! function_exists( 'em_display_event_tickets' ) ) {
 	function em_display_event_tickets( $post_id = 0 ) {
 		$post_id = (int) (empty( $post_id ) ? get_the_ID() : $post_id);
 
-		if ( empty( $post_id ) )
+		if ( empty( $post_id ) || ! Events_Maker()->options['general']['use_event_tickets'] )
 			return false;
 
 		em_get_template( 'single-event/tickets.php' );
@@ -585,22 +599,31 @@ if ( ! function_exists( 'em_page_title' ) ) {
 	function em_page_title( $echo = true ) {
 		$date = get_query_var( 'event_ondate' );
 
-		if ( em_is_event_archive( 'day' ) )
+		if ( em_is_event_archive( 'day' ) ) {
 			$page_title = sprintf( __( 'Event Daily Archives: %s', 'events-maker' ), '<span>' . em_format_date( $date, 'date' ) . '</span>' );
-		elseif ( em_is_event_archive( 'month' ) )
+		} elseif ( em_is_event_archive( 'month' ) ) {
 			$page_title = sprintf( __( 'Event Monthly Archives: %s', 'events-maker' ), '<span>' . em_format_date( $date . '/28', 'date', _x( 'F Y', 'monthly archives date format', 'events-maker' ) ) . '</span>' );
-		elseif ( em_is_event_archive( 'year' ) )
+		} elseif ( em_is_event_archive( 'year' ) ) {
 			$page_title = sprintf( __( 'Event Yearly Archives: %s', 'events-maker' ), '<span>' . em_format_date( $date . '/01/28', 'date', _x( 'Y', 'yearly archives date format', 'events-maker' ) ) . '</span>' );
-		elseif ( is_tax( 'event-category' ) )
-			$page_title = sprintf( __( 'Events Category: %s', 'events-maker' ), single_term_title( '', false ) );
-		elseif ( is_tax( 'event-location' ) )
-			$page_title = sprintf( __( 'Events Location: %s', 'events-maker' ), single_term_title( '', false ) );
-		elseif ( is_tax( 'event-organizer' ) )
-			$page_title = sprintf( __( 'Events Organizer: %s', 'events-maker' ), single_term_title( '', false ) );
-		elseif ( is_tax( 'event-tag' ) )
-			$page_title = sprintf( __( 'Events Tag: %s', 'events-maker' ), single_term_title( '', false ) );
-		else
+		} elseif ( is_tax( 'event-category' ) ) {
+			$taxonomy_obj = get_taxonomy( 'event-category' );
+			
+			$page_title = sprintf( __( '%1$s: %2$s', 'events-maker' ), $taxonomy_obj->labels->menu_name, single_term_title( '', false ) );
+		} elseif ( is_tax( 'event-location' ) ) {
+			$taxonomy_obj = get_taxonomy( 'event-location' );
+			
+			$page_title = sprintf( __( '%1$s: %2$s', 'events-maker' ), $taxonomy_obj->labels->menu_name, single_term_title( '', false ) );
+		} elseif ( is_tax( 'event-organizer' ) ) {
+			$taxonomy_obj = get_taxonomy( 'event-organizer' );
+			
+			$page_title = sprintf( __( '%1$s: %2$s', 'events-maker' ), $taxonomy_obj->labels->menu_name, single_term_title( '', false ) );
+		} elseif ( is_tax( 'event-tag' ) ) {
+			$taxonomy_obj = get_taxonomy( 'event-tag' );
+			
+			$page_title = sprintf( __( '%1$s: %2$s', 'events-maker' ), $taxonomy_obj->labels->menu_name, single_term_title( '', false ) );
+		} else {
 			$page_title = __( 'Events', 'events-maker' );
+		}
 
 		$page_title = apply_filters( 'em_page_title', $page_title );
 
@@ -613,7 +636,7 @@ if ( ! function_exists( 'em_page_title' ) ) {
 }
 
 /**
- * Show an archive description on taxonomy archives.
+ * Display an archive description on taxonomy archives.
  */
 if ( ! function_exists( 'em_taxonomy_archive_description' ) ) {
 
@@ -636,7 +659,7 @@ if ( ! function_exists( 'em_taxonomy_archive_description' ) ) {
 }
 
 /**
- * Show an archive description on taxonomy archives.
+ * Display an archive description on taxonomy archives.
  */
 if ( ! function_exists( 'em_event_archive_description' ) ) {
 

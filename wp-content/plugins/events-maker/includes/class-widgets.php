@@ -1,9 +1,13 @@
 <?php
+
+// exit if accessed directly
 if ( ! defined( 'ABSPATH' ) )
 	exit;
 
 /**
  * Events_Maker_Widgets class.
+ * 
+ * @class Events_Maker_Widgets
  */
 class Events_Maker_Widgets {
 
@@ -33,6 +37,8 @@ new Events_Maker_Widgets();
 
 /**
  * Events_Maker_Archive_Widget class.
+ * 
+ * @class Events_Maker_Search_Widget
  */
 class Events_Maker_Search_Widget extends WP_Widget {
 
@@ -42,23 +48,29 @@ class Events_Maker_Search_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_Search_Widget', __( 'Events Search', 'events-maker' ), array(
-				'description' => __( 'An advanced event searchform.', 'events-maker' ),
-				'classname' => 'widget_events_maker_search'
-			)
+		'Events_Maker_Search_Widget', __( 'Event Search', 'events-maker' ), array(
+			'description'	 => __( 'An advanced event searchform.', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_search'
+		)
 		);
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events Search', 'events-maker' ),
-			'show_string_input'		=> true,
-			'show_date_input'		=> true,
-			'show_event_categories'	=> true,
-			'show_event_locations'	=> true,
-			'show_event_organizers'	=> true,
-			'show_event_tags'		=> true,
+			'title'					 => __( 'Event Search', 'events-maker' ),
+			'show_string_input'		 => true,
+			'show_date_input'		 => true,
+			'show_event_categories'	 => true,
+			'show_event_locations'	 => true,
+			'show_event_organizers'	 => true,
+			'show_event_tags'		 => true,
 		);
 	}
 
+	/**
+	 * Display widget.
+	 * 
+	 * @param array $args
+	 * @param object $instance
+	 */
 	public function widget( $args, $instance ) {
 		$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 
@@ -69,33 +81,45 @@ class Events_Maker_Search_Widget extends WP_Widget {
 		echo $html;
 	}
 
+	/** Render widget form.
+	 * 
+	 * @param object $instance
+	 * @return mixed
+	 */
 	public function form( $instance ) {
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'show_string_input' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_string_input' ) . '" value="" ' . checked( true, (isset( $instance['show_string_input'] ) ? $instance['show_string_input'] : $this->em_defaults['show_string_input'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_string_input' ) . '">' . __( 'Show searchphrase input field', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_date_input' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_date_input' ) . '" value="" ' . checked( true, (isset( $instance['show_date_input'] ) ? $instance['show_date_input'] : $this->em_defaults['show_date_input'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_date_input' ) . '">' . __( 'Show date input fields', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_event_categories' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_categories' ) . '" value="" ' . checked( true, (isset( $instance['show_event_categories dropdown'] ) ? $instance['show_event_categories'] : $this->em_defaults['show_event_categories'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_categories' ) . '">' . __( 'Show event categories dropdown', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_event_locations' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_locations' ) . '" value="" ' . checked( true, (isset( $instance['show_event_locations'] ) ? $instance['show_event_locations'] : $this->em_defaults['show_event_locations'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_locations' ) . '">' . __( 'Show event locations dropdown', 'events-maker' ) . '</label><br />';
-		
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <input id="' . $this->get_field_id( 'show_string_input' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_string_input' ) . '" value="" ' . checked( true, (isset( $instance['show_string_input'] ) ? $instance['show_string_input'] : $this->em_defaults['show_string_input'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_string_input' ) . '">' . __( 'Show searchphrase input field', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_date_input' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_date_input' ) . '" value="" ' . checked( true, (isset( $instance['show_date_input'] ) ? $instance['show_date_input'] : $this->em_defaults['show_date_input'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_date_input' ) . '">' . __( 'Show date input fields', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_event_categories' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_categories' ) . '" value="" ' . checked( true, (isset( $instance['show_event_categories dropdown'] ) ? $instance['show_event_categories'] : $this->em_defaults['show_event_categories'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_categories' ) . '">' . __( 'Show event categories dropdown', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_event_locations' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_locations' ) . '" value="" ' . checked( true, (isset( $instance['show_event_locations'] ) ? $instance['show_event_locations'] : $this->em_defaults['show_event_locations'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_locations' ) . '">' . __( 'Show event locations dropdown', 'events-maker' ) . '</label><br />';
+
 		if ( Events_Maker()->options['general']['use_organizers'] === true ) {
 			$html .= '
-			<input id="' . $this->get_field_id( 'show_event_organizers' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_organizers' ) . '" value="" ' . checked( true, (isset( $instance['show_event_organizers'] ) ? $instance['show_event_organizers'] : $this->em_defaults['show_event_organizers'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_organizers' ) . '">' . __( 'Show event organizers dropdown', 'events-maker' ) . '</label><br />';
+	    <input id="' . $this->get_field_id( 'show_event_organizers' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_organizers' ) . '" value="" ' . checked( true, (isset( $instance['show_event_organizers'] ) ? $instance['show_event_organizers'] : $this->em_defaults['show_event_organizers'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_organizers' ) . '">' . __( 'Show event organizers dropdown', 'events-maker' ) . '</label><br />';
 		}
-		
+
 		$html .= '
-			<input id="' . $this->get_field_id( 'show_event_tags' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_tags' ) . '" value="" ' . checked( true, (isset( $instance['show_event_tags'] ) ? $instance['show_event_tags'] : $this->em_defaults['show_event_tags'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_tags' ) . '">' . __( 'Show event tags dropdown', 'events-maker' ) . '</label><br />
-		</p>';
+	    <input id="' . $this->get_field_id( 'show_event_tags' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_tags' ) . '" value="" ' . checked( true, (isset( $instance['show_event_tags'] ) ? $instance['show_event_tags'] : $this->em_defaults['show_event_tags'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_tags' ) . '">' . __( 'Show event tags dropdown', 'events-maker' ) . '</label><br />
+	</p>';
 
 		echo $html;
 	}
 
+	/**
+	 * Save widget form.
+	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
+	 */
 	public function update( $new_instance, $old_instance ) {
 		// title
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
 
 		// checkout
 		$old_instance['show_string_input'] = ( isset( $new_instance['show_string_input'] ) ? true : false );
@@ -112,6 +136,8 @@ class Events_Maker_Search_Widget extends WP_Widget {
 
 /**
  * Events_Maker_Archive_Widget class.
+ * 
+ * @class Events_Maker_Archive_Widget
  */
 class Events_Maker_Archive_Widget extends WP_Widget {
 
@@ -121,32 +147,38 @@ class Events_Maker_Archive_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_Archive_Widget', __( 'Events Archives', 'events-maker' ), array(
-				'description' => __( 'Displays events archives', 'events-maker' ),
-				'classname' => 'widget_events_maker_archive'
-			)
+		'Events_Maker_Archive_Widget', __( 'Event Archives', 'events-maker' ), array(
+			'description'	 => __( 'Displays event archives', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_archive'
+		)
 		);
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events Archives', 'events-maker' ),
-			'display_as_dropdown'	=> false,
-			'show_post_count'		=> true,
-			'type'					=> 'monthly',
-			'order'					=> 'desc',
-			'limit'					=> 0
+			'title'					 => __( 'Event Archives', 'events-maker' ),
+			'display_as_dropdown'	 => false,
+			'show_post_count'		 => true,
+			'type'					 => 'monthly',
+			'order'					 => 'desc',
+			'limit'					 => 0
 		);
 
 		$this->em_types = array(
-			'monthly'	 			=> __( 'Monthly', 'events-maker' ),
-			'yearly'	 			=> __( 'Yearly', 'events-maker' )
+			'monthly'	 => __( 'Monthly', 'events-maker' ),
+			'yearly'	 => __( 'Yearly', 'events-maker' )
 		);
 
 		$this->em_order_types = array(
-			'asc'					=> __( 'Ascending', 'events-maker' ),
-			'desc'					=> __( 'Descending', 'events-maker' )
+			'asc'	 => __( 'Ascending', 'events-maker' ),
+			'desc'	 => __( 'Descending', 'events-maker' )
 		);
 	}
 
+	/**
+	 * Display widget.
+	 * 
+	 * @param array $args
+	 * @param object $instance
+	 */
 	public function widget( $args, $instance ) {
 		$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 
@@ -157,53 +189,65 @@ class Events_Maker_Archive_Widget extends WP_Widget {
 		echo $html;
 	}
 
+	/** Render widget form.
+	 * 
+	 * @param object $instance
+	 * @return mixed
+	 */
 	public function form( $instance ) {
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_post_count' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_post_count' ) . '" value="" ' . checked( true, (isset( $instance['show_post_count'] ) ? $instance['show_post_count'] : $this->em_defaults['show_post_count'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_post_count' ) . '">' . __( 'Show amount of events', 'events-maker' ) . '</label>
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'type' ) . '">' . __( 'Display Type', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'type' ) . '" name="' . $this->get_field_name( 'type' ) . '">';
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_post_count' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_post_count' ) . '" value="" ' . checked( true, (isset( $instance['show_post_count'] ) ? $instance['show_post_count'] : $this->em_defaults['show_post_count'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_post_count' ) . '">' . __( 'Show amount of events', 'events-maker' ) . '</label>
+	</p>
+	<p>
+	    <label for="' . $this->get_field_id( 'type' ) . '">' . __( 'Display Type', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'type' ) . '" name="' . $this->get_field_name( 'type' ) . '">';
 
 		foreach ( $this->em_types as $id => $type ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['type'] ) ? $instance['type'] : $this->em_defaults['type'] ), false ) . '>' . $type . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['type'] ) ? $instance['type'] : $this->em_defaults['type'] ), false ) . '>' . $type . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
+	    </select>
+	</p>
+	<p>
+	    <label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
 
 		foreach ( $this->em_order_types as $id => $order ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>
-			<label for="' . $this->get_field_id( 'limit' ) . '">' . __( 'Limit', 'events-maker' ) . ':</label> <input id="' . $this->get_field_id( 'limit' ) . '" type="text" name="' . $this->get_field_name( 'limit' ) . '" value="' . esc_attr( isset( $instance['limit'] ) ? $instance['limit'] : $this->em_defaults['limit'] ) . '" />
-		</p>';
+	    </select>
+	</p>
+	<label for="' . $this->get_field_id( 'limit' ) . '">' . __( 'Limit', 'events-maker' ) . ':</label> <input id="' . $this->get_field_id( 'limit' ) . '" type="text" name="' . $this->get_field_name( 'limit' ) . '" value="' . esc_attr( isset( $instance['limit'] ) ? $instance['limit'] : $this->em_defaults['limit']  ) . '" />
+	</p>';
 
 		echo $html;
 	}
 
+	/**
+	 * Save widget form.
+	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
+	 */
 	public function update( $new_instance, $old_instance ) {
 		// checkboxes
 		$old_instance['display_as_dropdown'] = (isset( $new_instance['display_as_dropdown'] ) ? true : false);
 		$old_instance['show_post_count'] = (isset( $new_instance['show_post_count'] ) ? true : false);
 
 		// title
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
 
 		// limit
 		$old_instance['limit'] = (int) (isset( $new_instance['limit'] ) && (int) $new_instance['limit'] >= 0 ? $new_instance['limit'] : $this->em_defaults['limit']);
@@ -221,6 +265,8 @@ class Events_Maker_Archive_Widget extends WP_Widget {
 
 /**
  * Events_Maker_Calendar_Widget class.
+ * 
+ * @class Events_Maker_Calendar_Widget
  */
 class Events_Maker_Calendar_Widget extends WP_Widget {
 
@@ -231,10 +277,10 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_Calendar_Widget', __( 'Events Calendar', 'events-maker' ), array(
-				'description' => __( 'Displays events calendar', 'events-maker' ),
-				'classname' => 'widget_events_maker_calendar'
-			)
+		'Events_Maker_Calendar_Widget', __( 'Event Calendar', 'events-maker' ), array(
+			'description'	 => __( 'Displays event calendar', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_calendar'
+		)
 		);
 
 		// actions
@@ -242,31 +288,33 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 		add_action( 'wp_ajax_get-events-widget-calendar-month', array( $this, 'get_widget_calendar_month' ) );
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events Calendar', 'events-maker' ),
-			'show_past_events'		=> Events_Maker()->options['general']['show_past_events'],
-			'show_occurrences'		=> Events_Maker()->options['general']['show_occurrences'],
-			'highlight_weekends'	=> true,
-			'categories'			=> 'all',
-			'locations'				=> 'all',
-			'organizers'			=> 'all',
-			'css_style'				=> 'basic'
+			'title'				 => __( 'Event Calendar', 'events-maker' ),
+			'show_past_events'	 => Events_Maker()->options['general']['show_past_events'],
+			'show_occurrences'	 => Events_Maker()->options['general']['show_occurrences'],
+			'highlight_weekends' => true,
+			'categories'		 => 'all',
+			'locations'			 => 'all',
+			'organizers'		 => 'all',
+			'css_style'			 => 'basic'
 		);
 
 		$this->em_taxonomies = array(
-			'all'					=> __( 'all', 'events-maker' ),
-			'selected'				=> __( 'selected', 'events-maker' )
+			'all'		 => __( 'all', 'events-maker' ),
+			'selected'	 => __( 'selected', 'events-maker' )
 		);
 
 		$this->em_css_styles = array(
-			'basic'					=> __( 'basic', 'events-maker' ),
-			'dark'					=> __( 'dark', 'events-maker' ),
-			'light'					=> __( 'light', 'events-maker' ),
-			'flat'					=> __( 'flat', 'events-maker' )
+			'basic'	 => __( 'basic', 'events-maker' ),
+			'dark'	 => __( 'dark', 'events-maker' ),
+			'light'	 => __( 'light', 'events-maker' ),
+			'flat'	 => __( 'flat', 'events-maker' )
 		);
 	}
 
 	/**
+	 * Ajax display calendar.
 	 * 
+	 * @return mixed
 	 */
 	public function get_widget_calendar_month() {
 		if ( ! empty( $_POST['action'] ) && ! empty( $_POST['date'] ) && ! empty( $_POST['widget_id'] ) && ! empty( $_POST['nonce'] ) && $_POST['action'] === 'get-events-widget-calendar-month' && check_ajax_referer( 'events-maker-widget-calendar', 'nonce', false ) ) {
@@ -280,11 +328,14 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Display widget.
 	 * 
+	 * @param array $args
+	 * @param object $instance
 	 */
 	public function widget( $args, $instance ) {
 		if ( ++ $this->em_included_widgets === 1 ) {
-			add_action ( 'wp_footer', array( $this, 'load_scripts' ) );
+			add_action( 'wp_footer', array( $this, 'load_scripts' ) );
 		}
 
 		$date = date( 'Y-m', current_time( 'timestamp' ) );
@@ -296,108 +347,114 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 
 		echo $html;
 	}
-	
+
 	/**
-	 * 
+	 * Enqueue calendar script and style.
 	 */
 	public function load_scripts() {
 		wp_register_script(
-			'events-maker-front-widgets-calendar', EVENTS_MAKER_URL . '/js/front-widgets.js', array( 'jquery' )
+		'events-maker-front-widgets-calendar', EVENTS_MAKER_URL . '/js/front-widgets.js', array( 'jquery' )
 		);
-		
+
 		wp_localize_script(
-			'events-maker-front-widgets-calendar', 'emArgs', array(
+		'events-maker-front-widgets-calendar', 'emArgs', array(
 			'ajaxurl'	 => admin_url( 'admin-ajax.php' ),
 			'nonce'		 => wp_create_nonce( 'events-maker-widget-calendar' )
-			)
+		)
 		);
 
 		wp_enqueue_script( 'events-maker-front-widgets-calendar' );
 	}
 
-	/**
+	/** Render widget form.
 	 * 
+	 * @param object $instance
+	 * @return mixed
 	 */
 	public function form( $instance ) {
 		$category = isset( $instance['categories'] ) ? $instance['categories'] : $this->em_defaults['categories'];
 		$location = isset( $instance['locations'] ) ? $instance['locations'] : $this->em_defaults['locations'];
 
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'show_past_events' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_past_events' ) . '" value="" ' . checked( true, (isset( $instance['show_past_events'] ) ? $instance['show_past_events'] : $this->em_defaults['show_past_events'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_past_events' ) . '">' . __( 'Show past events', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_occurrences' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_occurrences' ) . '" value="" ' . checked( true, (isset( $instance['show_occurrences'] ) ? $instance['show_occurrences'] : $this->em_defaults['show_occurrences'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_occurrences' ) . '">' . __( 'Show occurrences', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'highlight_weekends' ) . '" type="checkbox" name="' . $this->get_field_name( 'highlight_weekends' ) . '" value="" ' . checked( true, (isset( $instance['highlight_weekends'] ) ? $instance['highlight_weekends'] : $this->em_defaults['highlight_weekends'] ), false ) . ' /> <label for="' . $this->get_field_id( 'highlight_weekends' ) . '">' . __( 'Highlight weekends', 'events-maker' ) . '</label>
-		</p>
-		<p>
-			<label>' . __( 'CSS Style', 'events-maker' ) . ':</label>
-			<select name="' . $this->get_field_name( 'css_style' ) . '">';
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <input id="' . $this->get_field_id( 'show_past_events' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_past_events' ) . '" value="" ' . checked( true, (isset( $instance['show_past_events'] ) ? $instance['show_past_events'] : $this->em_defaults['show_past_events'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_past_events' ) . '">' . __( 'Show past events', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_occurrences' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_occurrences' ) . '" value="" ' . checked( true, (isset( $instance['show_occurrences'] ) ? $instance['show_occurrences'] : $this->em_defaults['show_occurrences'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_occurrences' ) . '">' . __( 'Show occurrences', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'highlight_weekends' ) . '" type="checkbox" name="' . $this->get_field_name( 'highlight_weekends' ) . '" value="" ' . checked( true, (isset( $instance['highlight_weekends'] ) ? $instance['highlight_weekends'] : $this->em_defaults['highlight_weekends'] ), false ) . ' /> <label for="' . $this->get_field_id( 'highlight_weekends' ) . '">' . __( 'Highlight weekends', 'events-maker' ) . '</label>
+	</p>
+	<p>
+	    <label>' . __( 'CSS Style', 'events-maker' ) . ':</label>
+	    <select name="' . $this->get_field_name( 'css_style' ) . '">';
 
 		foreach ( $this->em_css_styles as $style => $trans ) {
 			$html .= '
-				<option value="' . esc_attr( $style ) . '" ' . selected( $style, (isset( $instance['css_style'] ) ? $instance['css_style'] : $this->em_defaults['css_style'] ), false ) . '>' . $trans . '</option>';
+		<option value="' . esc_attr( $style ) . '" ' . selected( $style, (isset( $instance['css_style'] ) ? $instance['css_style'] : $this->em_defaults['css_style'] ), false ) . '>' . $trans . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>
-		<div class="events-maker-list">
-			<label>' . __( 'Event Categories', 'events-maker' ) . ':</label>
-			<br />';
+	    </select>
+	</p>
+	<div class="events-maker-list">
+	    <label>' . __( 'Event Categories', 'events-maker' ) . ':</label>
+	    <br />';
 
 		foreach ( $this->em_taxonomies as $id => $taxonomy ) {
 			$html .= '
-			<input class="taxonomy-select-cats" id="' . $this->get_field_id( 'cat_' . $id ) . '" name="' . $this->get_field_name( 'categories' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $category, false ) . ' /><label for="' . $this->get_field_id( 'cat_' . $id ) . '">' . $taxonomy . '</label> ';
+	    <input class="taxonomy-select-cats" id="' . $this->get_field_id( 'cat_' . $id ) . '" name="' . $this->get_field_name( 'categories' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $category, false ) . ' /><label for="' . $this->get_field_id( 'cat_' . $id ) . '">' . $taxonomy . '</label> ';
 		}
 
 		$html .= '
-			<div class="checkbox-list-cats checkbox-list"' . ($category === 'all' ? ' style="display: none;"' : '') . '>
-				' . $this->display_taxonomy_checkbox_list( 'event-category', 'categories_arr', $instance ) . '
-			</div>
-		</div>
-		<div class="events-maker-list">
-			<label>' . __( 'Event Locations', 'events-maker' ) . ':</label>
-			<br />';
+	    <div class="checkbox-list-cats checkbox-list"' . ($category === 'all' ? ' style="display: none;"' : '') . '>
+		' . $this->display_taxonomy_checkbox_list( 'event-category', 'categories_arr', $instance ) . '
+	    </div>
+	</div>
+	<div class="events-maker-list">
+	    <label>' . __( 'Event Locations', 'events-maker' ) . ':</label>
+	    <br />';
 
 		foreach ( $this->em_taxonomies as $id => $taxonomy ) {
 			$html .= '
-			<input class="taxonomy-select-locs" id="' . $this->get_field_id( 'loc_' . $id ) . '" name="' . $this->get_field_name( 'locations' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $location, false ) . ' /><label for="' . $this->get_field_id( 'loc_' . $id ) . '">' . $taxonomy . '</label> ';
+	    <input class="taxonomy-select-locs" id="' . $this->get_field_id( 'loc_' . $id ) . '" name="' . $this->get_field_name( 'locations' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $location, false ) . ' /><label for="' . $this->get_field_id( 'loc_' . $id ) . '">' . $taxonomy . '</label> ';
 		}
 
 		$html .= '
-			<div class="checkbox-list-locs checkbox-list"' . ($location === 'all' ? ' style="display: none;"' : '') . '>
-				' . $this->display_taxonomy_checkbox_list( 'event-location', 'locations_arr', $instance ) . '
-			</div>
-		</div>';
+	    <div class="checkbox-list-locs checkbox-list"' . ($location === 'all' ? ' style="display: none;"' : '') . '>
+		' . $this->display_taxonomy_checkbox_list( 'event-location', 'locations_arr', $instance ) . '
+	    </div>
+	</div>';
 
 		if ( Events_Maker()->options['general']['use_organizers'] === true ) {
 			$organizer = isset( $instance['organizers'] ) ? $instance['organizers'] : $this->em_defaults['organizers'];
 
 			$html .= '
-		<div class="events-maker-list">
-			<label>' . __( 'Event Organizers', 'events-maker' ) . ':</label>
-			<br />';
+	    <div class="events-maker-list">
+		<label>' . __( 'Event Organizers', 'events-maker' ) . ':</label>
+		<br />';
 
 			foreach ( $this->em_taxonomies as $id => $taxonomy ) {
 				$html .= '
-			<input class="taxonomy-select-orgs" id="' . $this->get_field_id( 'org_' . $id ) . '" name="' . $this->get_field_name( 'organizers' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $organizer, false ) . ' /><label for="' . $this->get_field_id( 'org_' . $id ) . '">' . $taxonomy . '</label> ';
+		<input class="taxonomy-select-orgs" id="' . $this->get_field_id( 'org_' . $id ) . '" name="' . $this->get_field_name( 'organizers' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $organizer, false ) . ' /><label for="' . $this->get_field_id( 'org_' . $id ) . '">' . $taxonomy . '</label> ';
 			}
 
 			$html .= '
-			<div class="checkbox-list-orgs checkbox-list"' . ($organizer === 'all' ? ' style="display: none;"' : '') . '>
-				' . $this->display_taxonomy_checkbox_list( 'event-organizer', 'organizers_arr', $instance ) . '
-			</div>
-		</div>';
+		<div class="checkbox-list-orgs checkbox-list"' . ($organizer === 'all' ? ' style="display: none;"' : '') . '>
+		    ' . $this->display_taxonomy_checkbox_list( 'event-organizer', 'organizers_arr', $instance ) . '
+		</div>
+	    </div>';
 		}
 
 		echo $html;
 	}
 
 	/**
+	 * Save widget form.
 	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// show past events
@@ -410,7 +467,7 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 		$old_instance['show_occurrences'] = isset( $new_instance['show_occurrences'] );
 
 		// title
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
 
 		// taxonomies
 		$old_instance['categories'] = (isset( $new_instance['categories'] ) && in_array( $new_instance['categories'], array_keys( $this->em_taxonomies ), true ) ? $new_instance['categories'] : $this->em_defaults['categories']);
@@ -469,7 +526,15 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Display full calendar.
 	 * 
+	 * @global object $wp_locale
+	 * @param array $options
+	 * @param string $start_date
+	 * @param array $allevents
+	 * @param string $widget_id
+	 * @param bool $ajax
+	 * @return mixed
 	 */
 	private function display_calendar( $options, $start_date, $allevents, $widget_id, $ajax = false ) {
 		$show_occurrences = (isset( $options['show_occurrences'] ) ? $options['show_occurrences'] : Events_Maker()->options['general']['show_occurrences']);
@@ -491,18 +556,18 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 
 						// same years and same months
 						if ( $s_date[0] === $e_date[0] && $s_date[1] === $e_date[1] ) {
-							for ( $i = $s_date[2]; $i <= $e_date[2]; $i ++  ) {
+							for ( $i = $s_date[2]; $i <= $e_date[2]; $i ++ ) {
 								$days_events[(int) $i][] = $event;
 							}
 						} else {
 							if ( $id === 'start' ) {
 								$no_days = date( 't', strtotime( $s_datetime[0] ) );
 
-								for ( $i = $s_date[2]; $i <= $no_days; $i ++  ) {
+								for ( $i = $s_date[2]; $i <= $no_days; $i ++ ) {
 									$days_events[(int) $i][] = $event;
 								}
 							} else {
-								for ( $i = $e_date[2]; $i >= 1; $i --  ) {
+								for ( $i = $e_date[2]; $i >= 1; $i -- ) {
 									$days_events[(int) $i][] = $event;
 								}
 							}
@@ -529,21 +594,21 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 			$rel .= ICL_LANGUAGE_CODE;
 
 		$html = '
-		<div id="events-calendar-' . $widget_id . '" class="widget_events_calendar widget_calendar' . (isset( $options['css_style'] ) && $options['css_style'] !== 'basic' ? ' ' . $options['css_style'] : '') . '" data-rel="' . $rel . '" ' . ($ajax === true ? 'style="display: none;"' : '') . '>
-			<span class="active-month">' . $wp_locale->get_month( $date[1] ) . ' ' . $date[0] . '</span>
-			<table class="nav-days">
-				<thead>
-					<tr>';
+	<div id="events-calendar-' . $widget_id . '" class="widget_events_calendar widget_calendar' . (isset( $options['css_style'] ) && $options['css_style'] !== 'basic' ? ' ' . $options['css_style'] : '') . '" data-rel="' . $rel . '" ' . ($ajax === true ? 'style="display: none;"' : '') . '>
+	    <span class="active-month">' . $wp_locale->get_month( $date[1] ) . ' ' . $date[0] . '</span>
+	    <table class="nav-days">
+		<thead>
+		    <tr>';
 
-		for ( $i = 1; $i <= 7; $i ++  ) {
+		for ( $i = 1; $i <= 7; $i ++ ) {
 			$html .= '
-						<th scope="col">' . $wp_locale->get_weekday_initial( $wp_locale->get_weekday( Events_Maker()->options['general']['first_weekday'] === 7 ? ($i !== 7 ? ($i - 1) : 6) : ($i !== 7 ? $i : 0) ) ) . '</th>';
+			<th scope="col">' . $wp_locale->get_weekday_initial( $wp_locale->get_weekday( Events_Maker()->options['general']['first_weekday'] === 7 ? ($i !== 7 ? ($i - 1) : 6) : ($i !== 7 ? $i : 0)  ) ) . '</th>';
 		}
 
 		$html .= '
-					</tr>
-				</thead>
-				<tbody>';
+		    </tr>
+		</thead>
+		<tbody>';
 
 		$weeks = (int) ceil( ($date[3] - $weekdays[$first_day]) / 7 ) + 1;
 
@@ -556,10 +621,10 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 		$now = date_parse( current_time( 'mysql' ) );
 		$day = $k = 1;
 
-		for ( $i = 1; $i <= $weeks; $i ++  ) {
+		for ( $i = 1; $i <= $weeks; $i ++ ) {
 			$row = '<tr>';
 
-			for ( $j = 1; $j <= 7; $j ++  ) {
+			for ( $j = 1; $j <= 7; $j ++ ) {
 				$td_class = array();
 				$real_day = (bool) ($k ++ >= $first_day && $day <= $date[3]);
 
@@ -607,26 +672,30 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 		}
 
 		$html .= '
-				</tbody>
-			</table>
-			<table class="nav-months">
-				<tr>
-					<td class="prev-month" colspan="2">
-						<a data-rel="' . ($prev_month === 11 ? ($date[0] - 1) : $date[0]) . '-' . $prev_month_pad . '" href="#">&laquo; ' . apply_filters( 'em_calendar_month_name', $wp_locale->get_month( $prev_month_pad ) ) . '</a>
-					</td>
-					<td class="ajax-spinner" colspan="1"><div></div></td>
-					<td class="next-month" colspan="2">
-						<a data-rel="' . ($next_month === 0 ? ($date[0] + 1) : $date[0]) . '-' . $next_month_pad . '" href="#">' . apply_filters( 'em_calendar_month_name', $wp_locale->get_month( $next_month_pad ) ) . ' &raquo;</a>
-					</td>
-				</tr>
-			</table>
-		</div>';
+		</tbody>
+	    </table>
+	    <table class="nav-months">
+		<tr>
+		    <td class="prev-month" colspan="2">
+			<a data-rel="' . ($prev_month === 11 ? ($date[0] - 1) : $date[0]) . '-' . $prev_month_pad . '" href="#">&laquo; ' . apply_filters( 'em_calendar_month_name', $wp_locale->get_month( $prev_month_pad ) ) . '</a>
+		    </td>
+		    <td class="ajax-spinner" colspan="1"><div></div></td>
+		    <td class="next-month" colspan="2">
+			<a data-rel="' . ($next_month === 0 ? ($date[0] + 1) : $date[0]) . '-' . $next_month_pad . '" href="#">' . apply_filters( 'em_calendar_month_name', $wp_locale->get_month( $next_month_pad ) ) . ' &raquo;</a>
+		    </td>
+		</tr>
+	    </table>
+	</div>';
 
 		return apply_filters( 'em_widget_calendar_html', $html );
 	}
 
 	/**
+	 * Get event's dates.
 	 * 
+	 * @param string $date
+	 * @param array $options
+	 * @return array
 	 */
 	private function get_events_days( $date, $options ) {
 		$allevents = $exclude_ids = array();
@@ -676,12 +745,12 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 			$args['lang'] = ICL_LANGUAGE_CODE;
 
 		$allevents['start'] = em_get_events(
-			array_merge(
-				$args, array(
-					'event_start_after'	 => $date . '-01',
-					'event_start_before' => $date . '-' . date( 't', strtotime( $date . '-02' ) )
-				)
-			)
+		array_merge(
+		$args, array(
+			'event_start_after'	 => $date . '-01',
+			'event_start_before' => $date . '-' . date( 't', strtotime( $date . '-02' ) )
+		)
+		)
 		);
 
 		foreach ( $allevents['start'] as $event ) {
@@ -689,45 +758,51 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 		}
 
 		$allevents['end'] = em_get_events(
-			array_merge(
-				$args, array(
-					'event_end_after'	 => $date . '-01',
-					'event_end_before'	 => $date . '-' . date( 't', strtotime( $date . '-02' ) ),
-					'post__not_in'		 => ( ! empty( $exclude_ids ) ? $exclude_ids : array())
-				)
-			)
+		array_merge(
+		$args, array(
+			'event_end_after'	 => $date . '-01',
+			'event_end_before'	 => $date . '-' . date( 't', strtotime( $date . '-02' ) ),
+			'post__not_in'		 => ( ! empty( $exclude_ids ) ? $exclude_ids : array())
+		)
+		)
 		);
 
 		return $allevents;
 	}
 
 	/**
+	 * Display taxonomy checkbox list.
 	 * 
+	 * @param string $taxonomy_name
+	 * @param string $name
+	 * @param object $instance
+	 * @param int $depth
+	 * @param int $parent
+	 * @return mixed
 	 */
 	private function display_taxonomy_checkbox_list( $taxonomy_name, $name, $instance, $depth = 0, $parent = 0 ) {
 		$html = '';
 		$array = isset( $instance[$name] ) ? $instance[$name] : array();
 		$terms = get_terms(
-			$taxonomy_name, array(
-				'hide_empty' => false,
-				'parent'	 => $parent
-			)
+		$taxonomy_name, array(
+			'hide_empty' => false,
+			'parent'	 => $parent
+		)
 		);
 
 		if ( ! empty( $terms ) ) {
 			$html .= '
-			<ul class="terms-checkbox-list depth-level-' . $depth ++ . '">';
+	    <ul class="terms-checkbox-list depth-level-' . $depth ++ . '">';
 
 			foreach ( $terms as $term ) {
 				$html .= '
-				<li>
-					<input id="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '" type="checkbox" name="' . $this->get_field_name( $name ) . '[]" value="' . esc_attr( $term->term_id ) . '" ' . checked( true, in_array( $term->term_id, $array ), false ) . ' /> <label for="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '">' . $term->name . '</label>
-					' . $this->display_taxonomy_checkbox_list( $taxonomy_name, $name, $instance, $depth, $term->term_id ) . '
-				</li>';
+		<li>
+		    <input id="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '" type="checkbox" name="' . $this->get_field_name( $name ) . '[]" value="' . esc_attr( $term->term_id ) . '" ' . checked( true, in_array( $term->term_id, $array ), false ) . ' /> <label for="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '">' . $term->name . '</label>' . $this->display_taxonomy_checkbox_list( $taxonomy_name, $name, $instance, $depth, $term->term_id ) . '
+		</li>';
 			}
 
 			$html .= '
-			</ul>';
+	    </ul>';
 		} elseif ( $parent === 0 )
 			$html = __( 'No results were found.', 'events-maker' );
 
@@ -738,6 +813,8 @@ class Events_Maker_Calendar_Widget extends WP_Widget {
 
 /**
  * Events_Maker_List_Widget class.
+ * 
+ * @class Events_Maker_List_Widget
  */
 class Events_Maker_List_Widget extends WP_Widget {
 
@@ -749,47 +826,47 @@ class Events_Maker_List_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_List_Widget', __( 'Events List', 'events-maker' ), array(
-				'description' => __( 'Displays a list of events', 'events-maker' ),
-				'classname' => 'widget_events_maker_list'
-			)
+		'Events_Maker_List_Widget', __( 'Event List', 'events-maker' ), array(
+			'description'	 => __( 'Displays a list of events', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_list'
+		)
 		);
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events', 'events-maker' ),
-			'number_of_events'		=> 5,
-			'thumbnail_size'		=> 'thumbnail',
-			'categories'			=> 'all',
-			'locations'				=> 'all',
-			'organizers'			=> 'all',
-			'order_by'				=> 'start',
-			'order'					=> 'desc',
-			'show_past_events'		=> Events_Maker()->options['general']['show_past_events'],
-			'show_occurrences'		=> Events_Maker()->options['general']['show_occurrences'],
-			'show_event_thumbnail'	=> true,
-			'show_event_excerpt'	=> false,
-			'show_featured'			=> false,
-			'no_events_message'		=> __( 'No Events', 'events-maker' ),
-			'date_format'			=> Events_Maker()->options['general']['datetime_format']['date'],
-			'time_format'			=> Events_Maker()->options['general']['datetime_format']['time'],
-			'show_archive_link'		=> false
+			'title'					 => __( 'Events', 'events-maker' ),
+			'number_of_events'		 => 5,
+			'thumbnail_size'		 => 'thumbnail',
+			'categories'			 => 'all',
+			'locations'				 => 'all',
+			'organizers'			 => 'all',
+			'order_by'				 => 'start',
+			'order'					 => 'desc',
+			'show_past_events'		 => Events_Maker()->options['general']['show_past_events'],
+			'show_occurrences'		 => Events_Maker()->options['general']['show_occurrences'],
+			'show_event_thumbnail'	 => true,
+			'show_event_excerpt'	 => false,
+			'show_featured'			 => false,
+			'no_events_message'		 => __( 'No Events', 'events-maker' ),
+			'date_format'			 => Events_Maker()->options['general']['datetime_format']['date'],
+			'time_format'			 => Events_Maker()->options['general']['datetime_format']['time'],
+			'show_archive_link'		 => false
 		);
 
 		$this->em_taxonomies = array(
-			'all'					=> __( 'all', 'events-maker' ),
-			'selected'				=> __( 'selected', 'events-maker' )
+			'all'		 => __( 'all', 'events-maker' ),
+			'selected'	 => __( 'selected', 'events-maker' )
 		);
 
 		$this->em_orders = array(
-			'start'					=> __( 'Start date', 'events-maker' ),
-			'end'					=> __( 'End date', 'events-maker' ),
-			'publish'				=> __( 'Publish date', 'events-maker' ),
-			'title'					=> __( 'Title', 'events-maker' )
+			'start'		 => __( 'Start date', 'events-maker' ),
+			'end'		 => __( 'End date', 'events-maker' ),
+			'publish'	 => __( 'Publish date', 'events-maker' ),
+			'title'		 => __( 'Title', 'events-maker' )
 		);
 
 		$this->em_order_types = array(
-			'asc'					=> __( 'Ascending', 'events-maker' ),
-			'desc'					=> __( 'Descending', 'events-maker' )
+			'asc'	 => __( 'Ascending', 'events-maker' ),
+			'desc'	 => __( 'Descending', 'events-maker' )
 		);
 
 		$this->em_image_sizes = array_merge( array( 'full' ), get_intermediate_image_sizes() );
@@ -797,7 +874,10 @@ class Events_Maker_List_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Display widget.
 	 * 
+	 * @param array $args
+	 * @param object $instance
 	 */
 	public function widget( $args, $instance ) {
 		$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
@@ -815,8 +895,10 @@ class Events_Maker_List_Widget extends WP_Widget {
 		echo $html;
 	}
 
-	/**
+	/** Render widget form.
 	 * 
+	 * @param object $instance
+	 * @return mixed
 	 */
 	public function form( $instance ) {
 		$category = isset( $instance['categories'] ) ? $instance['categories'] : $this->em_defaults['categories'];
@@ -826,131 +908,134 @@ class Events_Maker_List_Widget extends WP_Widget {
 			$organizer = isset( $instance['organizers'] ) ? $instance['organizers'] : $this->em_defaults['organizers'];
 
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'number_of_events' ) . '">' . __( 'Number of events', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'number_of_events' ) . '" name="' . $this->get_field_name( 'number_of_events' ) . '" type="text" value="' . esc_attr( isset( $instance['number_of_events'] ) ? $instance['number_of_events'] : $this->em_defaults['number_of_events'] ) . '" />
-		</p>
-		<div class="events-maker-list">
-			<label>' . __( 'Event Categories', 'events-maker' ) . ':</label>
-			<br />';
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <label for="' . $this->get_field_id( 'number_of_events' ) . '">' . __( 'Number of events', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'number_of_events' ) . '" name="' . $this->get_field_name( 'number_of_events' ) . '" type="text" value="' . esc_attr( isset( $instance['number_of_events'] ) ? $instance['number_of_events'] : $this->em_defaults['number_of_events']  ) . '" />
+	</p>
+	<div class="events-maker-list">
+	    <label>' . __( 'Event Categories', 'events-maker' ) . ':</label>
+	    <br />';
 
 		foreach ( $this->em_taxonomies as $id => $taxonomy ) {
 			$html .= '
-			<input class="taxonomy-select-cats" id="' . $this->get_field_id( 'cat_' . $id ) . '" name="' . $this->get_field_name( 'categories' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $category, false ) . ' /><label for="' . $this->get_field_id( 'cat_' . $id ) . '">' . $taxonomy . '</label> ';
+	    <input class="taxonomy-select-cats" id="' . $this->get_field_id( 'cat_' . $id ) . '" name="' . $this->get_field_name( 'categories' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $category, false ) . ' /><label for="' . $this->get_field_id( 'cat_' . $id ) . '">' . $taxonomy . '</label> ';
 		}
 
 		$html .= '
-			<div class="checkbox-list-cats checkbox-list"' . ($category === 'all' ? ' style="display: none;"' : '') . '>
-				' . $this->display_taxonomy_checkbox_list( 'event-category', 'categories_arr', $instance ) . '
-			</div>
-		</div>
-		<div class="events-maker-list">
-			<label>' . __( 'Event Locations', 'events-maker' ) . ':</label>
-			<br />';
+	    <div class="checkbox-list-cats checkbox-list"' . ($category === 'all' ? ' style="display: none;"' : '') . '>
+		' . $this->display_taxonomy_checkbox_list( 'event-category', 'categories_arr', $instance ) . '
+	    </div>
+	</div>
+	<div class="events-maker-list">
+	    <label>' . __( 'Event Locations', 'events-maker' ) . ':</label>
+	    <br />';
 
 		foreach ( $this->em_taxonomies as $id => $taxonomy ) {
 			$html .= '
-			<input class="taxonomy-select-locs" id="' . $this->get_field_id( 'loc_' . $id ) . '" name="' . $this->get_field_name( 'locations' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $location, false ) . ' /><label for="' . $this->get_field_id( 'loc_' . $id ) . '">' . $taxonomy . '</label> ';
+	    <input class="taxonomy-select-locs" id="' . $this->get_field_id( 'loc_' . $id ) . '" name="' . $this->get_field_name( 'locations' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $location, false ) . ' /><label for="' . $this->get_field_id( 'loc_' . $id ) . '">' . $taxonomy . '</label> ';
 		}
 
 		$html .= '
-			<div class="checkbox-list-locs checkbox-list"' . ($location === 'all' ? ' style="display: none;"' : '') . '>
-				' . $this->display_taxonomy_checkbox_list( 'event-location', 'locations_arr', $instance ) . '
-			</div>
-		</div>';
+	    <div class="checkbox-list-locs checkbox-list"' . ($location === 'all' ? ' style="display: none;"' : '') . '>
+		' . $this->display_taxonomy_checkbox_list( 'event-location', 'locations_arr', $instance ) . '
+	    </div>
+	</div>';
 
 		if ( Events_Maker()->options['general']['use_organizers'] === true ) {
 			$html .= '
-		<div class="events-maker-list">
-			<label>' . __( 'Event Organizers', 'events-maker' ) . ':</label>
-			<br />';
+	    <div class="events-maker-list">
+		<label>' . __( 'Event Organizers', 'events-maker' ) . ':</label>
+		<br />';
 
 			foreach ( $this->em_taxonomies as $id => $taxonomy ) {
 				$html .= '
-			<input class="taxonomy-select-orgs" id="' . $this->get_field_id( 'org_' . $id ) . '" name="' . $this->get_field_name( 'organizers' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $organizer, false ) . ' /><label for="' . $this->get_field_id( 'org_' . $id ) . '">' . $taxonomy . '</label> ';
+		<input class="taxonomy-select-orgs" id="' . $this->get_field_id( 'org_' . $id ) . '" name="' . $this->get_field_name( 'organizers' ) . '" type="radio" value="' . esc_attr( $id ) . '" ' . checked( $id, $organizer, false ) . ' /><label for="' . $this->get_field_id( 'org_' . $id ) . '">' . $taxonomy . '</label> ';
 			}
 
 			$html .= '
-			<div class="checkbox-list-orgs checkbox-list"' . ($organizer === 'all' ? ' style="display: none;"' : '') . '>
-				' . $this->display_taxonomy_checkbox_list( 'event-organizer', 'organizers_arr', $instance ) . '
-			</div>
-		</div>';
+		<div class="checkbox-list-orgs checkbox-list"' . ($organizer === 'all' ? ' style="display: none;"' : '') . '>
+		    ' . $this->display_taxonomy_checkbox_list( 'event-organizer', 'organizers_arr', $instance ) . '
+		</div>
+	    </div>';
 		}
 
 		$html .= '
-		<p>
-			<label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
+	    <p>
+		<label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
+		<select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
 
 		foreach ( $this->em_orders as $id => $order_by ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
+		    <option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
 		}
 
 		$html .= '
-			</select>
-			<br />
-			<label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
+		</select>
+		<br />
+		<label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
+		<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
 
 		foreach ( $this->em_order_types as $id => $order ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
+		    <option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
 		}
 
 		$show_event_thumbnail = (isset( $instance['show_event_thumbnail'] ) ? $instance['show_event_thumbnail'] : $this->em_defaults['show_event_thumbnail']);
 
 		$html .= '
-			</select>
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'show_past_events' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_past_events' ) . '" value="" ' . checked( true, (isset( $instance['show_past_events'] ) ? $instance['show_past_events'] : $this->em_defaults['show_past_events'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_past_events' ) . '">' . __( 'Display past events', 'events-maker' ) . '</label>
-			<br />
-			<input id="' . $this->get_field_id( 'show_occurrences' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_occurrences' ) . '" value="" ' . checked( true, (isset( $instance['show_occurrences'] ) ? $instance['show_occurrences'] : $this->em_defaults['show_occurrences'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_occurrences' ) . '">' . __( 'Display event occurrenses', 'events-maker' ) . '</label>
-			<br />
-			<input id="' . $this->get_field_id( 'show_event_excerpt' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_excerpt' ) . '" value="" ' . checked( true, (isset( $instance['show_event_excerpt'] ) ? $instance['show_event_excerpt'] : $this->em_defaults['show_event_excerpt'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_excerpt' ) . '">' . __( 'Display event excerpt', 'events-maker' ) . '</label>
-			<br />
-			<input id="' . $this->get_field_id( 'show_featured' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_featured' ) . '" value="" ' . checked( true, (isset( $instance['show_featured'] ) ? $instance['show_featured'] : $this->em_defaults['show_featured'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_featured' ) . '">' . __( 'Display featured events only', 'events-maker' ) . '</label>
-			<br />
-			<input id="' . $this->get_field_id( 'show_event_thumbnail' ) . '" class="em-show-event-thumbnail" type="checkbox" name="' . $this->get_field_name( 'show_event_thumbnail' ) . '" value="" ' . checked( true, $show_event_thumbnail, false ) . ' /> <label for="' . $this->get_field_id( 'show_event_thumbnail' ) . '">' . __( 'Display event thumbnail', 'events-maker' ) . '</label>
-			<br />
-			<input id="' . $this->get_field_id( 'show_archive_link' ) . '" class="em-show-archive-link" type="checkbox" name="' . $this->get_field_name( 'show_archive_link' ) . '" value="" ' . checked( true, (isset( $instance['show_archive_link'] ) ? $instance['show_archive_link'] : $this->em_defaults['show_archive_link'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_archive_link' ) . '">' . __( 'Display link for all events', 'events-maker' ) . '</label>
-			
-		</p>
-		<p class="em-event-thumbnail-size"' . ($show_event_thumbnail === true ? '' : ' style="display: none;"') . '>
-			<label for="' . $this->get_field_id( 'thumbnail_size' ) . '">' . __( 'Thumbnail size', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'thumbnail_size' ) . '" name="' . $this->get_field_name( 'thumbnail_size' ) . '">';
+		</select>
+	    </p>
+	    <p>
+		<input id="' . $this->get_field_id( 'show_past_events' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_past_events' ) . '" value="" ' . checked( true, (isset( $instance['show_past_events'] ) ? $instance['show_past_events'] : $this->em_defaults['show_past_events'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_past_events' ) . '">' . __( 'Display past events', 'events-maker' ) . '</label>
+		<br />
+		<input id="' . $this->get_field_id( 'show_occurrences' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_occurrences' ) . '" value="" ' . checked( true, (isset( $instance['show_occurrences'] ) ? $instance['show_occurrences'] : $this->em_defaults['show_occurrences'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_occurrences' ) . '">' . __( 'Display event occurrenses', 'events-maker' ) . '</label>
+		<br />
+		<input id="' . $this->get_field_id( 'show_event_excerpt' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_event_excerpt' ) . '" value="" ' . checked( true, (isset( $instance['show_event_excerpt'] ) ? $instance['show_event_excerpt'] : $this->em_defaults['show_event_excerpt'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_event_excerpt' ) . '">' . __( 'Display event excerpt', 'events-maker' ) . '</label>
+		<br />
+		<input id="' . $this->get_field_id( 'show_featured' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_featured' ) . '" value="" ' . checked( true, (isset( $instance['show_featured'] ) ? $instance['show_featured'] : $this->em_defaults['show_featured'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_featured' ) . '">' . __( 'Display featured events only', 'events-maker' ) . '</label>
+		<br />
+		<input id="' . $this->get_field_id( 'show_event_thumbnail' ) . '" class="em-show-event-thumbnail" type="checkbox" name="' . $this->get_field_name( 'show_event_thumbnail' ) . '" value="" ' . checked( true, $show_event_thumbnail, false ) . ' /> <label for="' . $this->get_field_id( 'show_event_thumbnail' ) . '">' . __( 'Display event thumbnail', 'events-maker' ) . '</label>
+		<br />
+		<input id="' . $this->get_field_id( 'show_archive_link' ) . '" class="em-show-archive-link" type="checkbox" name="' . $this->get_field_name( 'show_archive_link' ) . '" value="" ' . checked( true, (isset( $instance['show_archive_link'] ) ? $instance['show_archive_link'] : $this->em_defaults['show_archive_link'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_archive_link' ) . '">' . __( 'Display link for all events', 'events-maker' ) . '</label>	
+	    </p>
+	    <p class="em-event-thumbnail-size"' . ($show_event_thumbnail === true ? '' : ' style="display: none;"') . '>
+		<label for="' . $this->get_field_id( 'thumbnail_size' ) . '">' . __( 'Thumbnail size', 'events-maker' ) . ':</label>
+		<select id="' . $this->get_field_id( 'thumbnail_size' ) . '" name="' . $this->get_field_name( 'thumbnail_size' ) . '">';
 
 		$size_type = (isset( $instance['thumbnail_size'] ) ? $instance['thumbnail_size'] : $this->em_defaults['thumbnail_size']);
 
 		foreach ( $this->em_image_sizes as $size ) {
 			$html .= '
-				<option value="' . esc_attr( $size ) . '" ' . selected( $size, $size_type, false ) . '>' . $size . '</option>';
+		    <option value="' . esc_attr( $size ) . '" ' . selected( $size, $size_type, false ) . '>' . $size . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'no_events_message' ) . '">' . __( 'No events message', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'no_events_message' ) . '" type="text" name="' . $this->get_field_name( 'no_events_message' ) . '" value="' . esc_attr( isset( $instance['no_events_message'] ) ? $instance['no_events_message'] : $this->em_defaults['no_events_message'] ) . '" />
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'date_format' ) . '">' . __( 'Date format', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'date_format' ) . '" type="text" name="' . $this->get_field_name( 'date_format' ) . '" value="' . esc_attr( isset( $instance['date_format'] ) ? $instance['date_format'] : $this->em_defaults['date_format'] ) . '" /><br />
-			<label for="' . $this->get_field_id( 'time_format' ) . '">' . __( 'Time format', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'time_format' ) . '" type="text" name="' . $this->get_field_name( 'time_format' ) . '" value="' . esc_attr( isset( $instance['time_format'] ) ? $instance['time_format'] : $this->em_defaults['time_format'] ) . '" />
-		</p>';
+		</select>
+	    </p>
+	    <p>
+		<label for="' . $this->get_field_id( 'no_events_message' ) . '">' . __( 'No events message', 'events-maker' ) . ':</label>
+		<input id="' . $this->get_field_id( 'no_events_message' ) . '" type="text" name="' . $this->get_field_name( 'no_events_message' ) . '" value="' . esc_attr( isset( $instance['no_events_message'] ) ? $instance['no_events_message'] : $this->em_defaults['no_events_message']  ) . '" />
+	    </p>
+	    <p>
+		<label for="' . $this->get_field_id( 'date_format' ) . '">' . __( 'Date format', 'events-maker' ) . ':</label>
+		<input id="' . $this->get_field_id( 'date_format' ) . '" type="text" name="' . $this->get_field_name( 'date_format' ) . '" value="' . esc_attr( isset( $instance['date_format'] ) ? $instance['date_format'] : $this->em_defaults['date_format']  ) . '" /><br />
+		<label for="' . $this->get_field_id( 'time_format' ) . '">' . __( 'Time format', 'events-maker' ) . ':</label>
+		<input id="' . $this->get_field_id( 'time_format' ) . '" type="text" name="' . $this->get_field_name( 'time_format' ) . '" value="' . esc_attr( isset( $instance['time_format'] ) ? $instance['time_format'] : $this->em_defaults['time_format']  ) . '" />
+	    </p>';
 
 		echo $html;
 	}
 
 	/**
+	 * Save widget form.
 	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// number of events
@@ -972,12 +1057,12 @@ class Events_Maker_List_Widget extends WP_Widget {
 		$old_instance['show_archive_link'] = (isset( $new_instance['show_archive_link'] ) ? true : false);
 
 		// texts
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
-		$old_instance['no_events_message'] = sanitize_text_field( isset( $new_instance['no_events_message'] ) ? $new_instance['no_events_message'] : $this->em_defaults['no_events_message'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
+		$old_instance['no_events_message'] = sanitize_text_field( isset( $new_instance['no_events_message'] ) ? $new_instance['no_events_message'] : $this->em_defaults['no_events_message']  );
 
 		// date format
-		$old_instance['date_format'] = sanitize_text_field( isset( $new_instance['date_format'] ) ? $new_instance['date_format'] : $this->em_defaults['date_format'] );
-		$old_instance['time_format'] = sanitize_text_field( isset( $new_instance['time_format'] ) ? $new_instance['time_format'] : $this->em_defaults['time_format'] );
+		$old_instance['date_format'] = sanitize_text_field( isset( $new_instance['date_format'] ) ? $new_instance['date_format'] : $this->em_defaults['date_format']  );
+		$old_instance['time_format'] = sanitize_text_field( isset( $new_instance['time_format'] ) ? $new_instance['time_format'] : $this->em_defaults['time_format']  );
 
 		// taxonomies
 		$old_instance['categories'] = (isset( $new_instance['categories'] ) && in_array( $new_instance['categories'], array_keys( $this->em_taxonomies ), true ) ? $new_instance['categories'] : $this->em_defaults['categories']);
@@ -1033,41 +1118,50 @@ class Events_Maker_List_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Display taxonomy checkbox list.
 	 * 
+	 * @param string $taxonomy_name
+	 * @param string $name
+	 * @param object $instance
+	 * @param int $depth
+	 * @param int $parent
+	 * @return mixed
 	 */
 	private function display_taxonomy_checkbox_list( $taxonomy_name, $name, $instance, $depth = 0, $parent = 0 ) {
 		$html = '';
 		$array = isset( $instance[$name] ) ? $instance[$name] : array();
 		$terms = get_terms(
-			$taxonomy_name, array(
+		$taxonomy_name, array(
 			'hide_empty' => false,
 			'parent'	 => $parent
-			)
+		)
 		);
 
 		if ( ! empty( $terms ) ) {
 			$html .= '
-			<ul class="terms-checkbox-list depth-level-' . $depth ++ . '">';
+	    <ul class="terms-checkbox-list depth-level-' . $depth ++ . '">';
 
 			foreach ( $terms as $term ) {
 				$html .= '
-				<li>
-					<input id="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '" type="checkbox" name="' . $this->get_field_name( $name ) . '[]" value="' . esc_attr( $term->term_id ) . '" ' . checked( true, in_array( $term->term_id, $array ), false ) . ' /> <label for="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '">' . $term->name . '</label>
-					' . $this->display_taxonomy_checkbox_list( $taxonomy_name, $name, $instance, $depth, $term->term_id ) . '
-				</li>';
+		<li>
+		    <input id="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '" type="checkbox" name="' . $this->get_field_name( $name ) . '[]" value="' . esc_attr( $term->term_id ) . '" ' . checked( true, in_array( $term->term_id, $array ), false ) . ' /> <label for="' . $this->get_field_id( 'chkbxlst_' . $term->term_taxonomy_id ) . '">' . $term->name . '</label>' . $this->display_taxonomy_checkbox_list( $taxonomy_name, $name, $instance, $depth, $term->term_id ) . '
+		</li>';
 			}
 
 			$html .= '
-			</ul>';
+	    </ul>';
 		} elseif ( $parent === 0 )
 			$html = __( 'No results were found.', 'events-maker' );
 
 		return $html;
 	}
+
 }
 
 /**
  * Events_Maker_Categories_Widget class.
+ * 
+ * @class Events_Maker_Categories_Widget
  */
 class Events_Maker_Categories_Widget extends WP_Widget {
 
@@ -1077,33 +1171,36 @@ class Events_Maker_Categories_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_Categories_Widget', __( 'Events Categories', 'events-maker' ), array(
-				'description' => __( 'Displays a list of events categories', 'events-maker' ),
-				'classname' => 'widget_events_maker_categories'
-			)
+		'Events_Maker_Categories_Widget', __( 'Event Categories', 'events-maker' ), array(
+			'description'	 => __( 'Displays a list of event categories', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_categories'
+		)
 		);
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events Categories', 'events-maker' ),
-			'display_as_dropdown'	=> false,
-			'show_hierarchy'		=> true,
-			'order_by'				=> 'name',
-			'order'					=> 'asc'
+			'title'					 => __( 'Event Categories', 'events-maker' ),
+			'display_as_dropdown'	 => false,
+			'show_hierarchy'		 => true,
+			'order_by'				 => 'name',
+			'order'					 => 'asc'
 		);
 
 		$this->em_orders = array(
-			'id'					=> __( 'ID', 'events-maker' ),
-			'name'					=> __( 'Name', 'events-maker' )
+			'id'	 => __( 'ID', 'events-maker' ),
+			'name'	 => __( 'Name', 'events-maker' )
 		);
 
 		$this->em_order_types = array(
-			'asc'					=> __( 'Ascending', 'events-maker' ),
-			'desc'					=> __( 'Descending', 'events-maker' )
+			'asc'	 => __( 'Ascending', 'events-maker' ),
+			'desc'	 => __( 'Descending', 'events-maker' )
 		);
 	}
 
 	/**
+	 * Display widget.
 	 * 
+	 * @param array $args
+	 * @param object $instance
 	 */
 	public function widget( $args, $instance ) {
 		$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
@@ -1115,52 +1212,58 @@ class Events_Maker_Categories_Widget extends WP_Widget {
 		echo $html;
 	}
 
-	/**
+	/** Render widget form.
 	 * 
+	 * @param object $instance
+	 * @return mixed
 	 */
 	public function form( $instance ) {
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_hierarchy' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_hierarchy' ) . '" value="" ' . checked( true, (isset( $instance['show_hierarchy'] ) ? $instance['show_hierarchy'] : $this->em_defaults['show_hierarchy'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_hierarchy' ) . '">' . __( 'Show hierarchy', 'events-maker' ) . '</label>
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_hierarchy' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_hierarchy' ) . '" value="" ' . checked( true, (isset( $instance['show_hierarchy'] ) ? $instance['show_hierarchy'] : $this->em_defaults['show_hierarchy'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_hierarchy' ) . '">' . __( 'Show hierarchy', 'events-maker' ) . '</label>
+	</p>
+	<p>
+	    <label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
 
 		foreach ( $this->em_orders as $id => $order_by ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
 		}
 
 		$html .= '
-			</select>
-			<br />
-			<label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
+	    </select>
+	    <br />
+	    <label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
 
 		foreach ( $this->em_order_types as $id => $order ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>';
+	    </select>
+	</p>';
 
 		echo $html;
 	}
 
 	/**
+	 * Save widget form.
 	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// title
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
 
 		// checkboxes
 		$old_instance['display_as_dropdown'] = (isset( $new_instance['display_as_dropdown'] ) ? true : false);
@@ -1177,6 +1280,8 @@ class Events_Maker_Categories_Widget extends WP_Widget {
 
 /**
  * Events_Maker_Locations_Widget class.
+ * 
+ * @class Events_Maker_Locations_Widget
  */
 class Events_Maker_Locations_Widget extends WP_Widget {
 
@@ -1186,33 +1291,36 @@ class Events_Maker_Locations_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_Locations_Widget', __( 'Events Locations', 'events-maker' ), array(
-				'description' => __( 'Displays a list of events locations', 'events-maker' ),
-				'classname' => 'widget_events_maker_locations'
-			)
+		'Events_Maker_Locations_Widget', __( 'Event Locations', 'events-maker' ), array(
+			'description'	 => __( 'Displays a list of event locations', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_locations'
+		)
 		);
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events Locations', 'events-maker' ),
-			'display_as_dropdown'	=> false,
-			'show_hierarchy'		=> true,
-			'order_by'				=> 'name',
-			'order'					=> 'asc'
+			'title'					 => __( 'Event Locations', 'events-maker' ),
+			'display_as_dropdown'	 => false,
+			'show_hierarchy'		 => true,
+			'order_by'				 => 'name',
+			'order'					 => 'asc'
 		);
 
 		$this->em_orders = array(
-			'id'					=> __( 'ID', 'events-maker' ),
-			'name'					=> __( 'Name', 'events-maker' )
+			'id'	 => __( 'ID', 'events-maker' ),
+			'name'	 => __( 'Name', 'events-maker' )
 		);
 
 		$this->em_order_types = array(
-			'asc'					=> __( 'Ascending', 'events-maker' ),
-			'desc'					=> __( 'Descending', 'events-maker' )
+			'asc'	 => __( 'Ascending', 'events-maker' ),
+			'desc'	 => __( 'Descending', 'events-maker' )
 		);
 	}
 
 	/**
+	 * Display widget.
 	 * 
+	 * @param array $args
+	 * @param object $instance
 	 */
 	public function widget( $args, $instance ) {
 		$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
@@ -1224,52 +1332,58 @@ class Events_Maker_Locations_Widget extends WP_Widget {
 		echo $html;
 	}
 
-	/**
+	/** Render widget form.
 	 * 
+	 * @param object $instance
+	 * @return mixed
 	 */
 	public function form( $instance ) {
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_hierarchy' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_hierarchy' ) . '" value="" ' . checked( true, (isset( $instance['show_hierarchy'] ) ? $instance['show_hierarchy'] : $this->em_defaults['show_hierarchy'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_hierarchy' ) . '">' . __( 'Show hierarchy', 'events-maker' ) . '</label>
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_hierarchy' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_hierarchy' ) . '" value="" ' . checked( true, (isset( $instance['show_hierarchy'] ) ? $instance['show_hierarchy'] : $this->em_defaults['show_hierarchy'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_hierarchy' ) . '">' . __( 'Show hierarchy', 'events-maker' ) . '</label>
+	</p>
+	<p>
+	    <label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
 
 		foreach ( $this->em_orders as $id => $order_by ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
 		}
 
 		$html .= '
-			</select>
-			<br />
-			<label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
+	    </select>
+	    <br />
+	    <label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
 
 		foreach ( $this->em_order_types as $id => $order ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>';
+	    </select>
+	</p>';
 
 		echo $html;
 	}
 
 	/**
+	 * Save widget form.
 	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// title
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
 
 		// checkboxes
 		$old_instance['display_as_dropdown'] = (isset( $new_instance['display_as_dropdown'] ) ? true : false);
@@ -1286,6 +1400,8 @@ class Events_Maker_Locations_Widget extends WP_Widget {
 
 /**
  * Events_Maker_Organizers_Widget class.
+ * 
+ * @class Events_Maker_Organizers_Widget
  */
 class Events_Maker_Organizers_Widget extends WP_Widget {
 
@@ -1295,33 +1411,36 @@ class Events_Maker_Organizers_Widget extends WP_Widget {
 
 	public function __construct() {
 		parent::__construct(
-			'Events_Maker_Organizers_Widget', __( 'Events Organizers', 'events-maker' ), array(
-				'description' => __( 'Displays a list of events organizers', 'events-maker' ),
-				'classname' => 'widget_events_maker_organizers'
-			)
+		'Events_Maker_Organizers_Widget', __( 'Event Organizers', 'events-maker' ), array(
+			'description'	 => __( 'Displays a list of event organizers', 'events-maker' ),
+			'classname'		 => 'widget_events_maker_organizers'
+		)
 		);
 
 		$this->em_defaults = array(
-			'title'					=> __( 'Events Organizers', 'events-maker' ),
-			'display_as_dropdown'	=> false,
-			'show_hierarchy'		=> true,
-			'order_by'				=> 'name',
-			'order'					=> 'asc'
+			'title'					 => __( 'Event Organizers', 'events-maker' ),
+			'display_as_dropdown'	 => false,
+			'show_hierarchy'		 => true,
+			'order_by'				 => 'name',
+			'order'					 => 'asc'
 		);
 
 		$this->em_orders = array(
-			'id'					=> __( 'ID', 'events-maker' ),
-			'name'					=> __( 'Name', 'events-maker' )
+			'id'	 => __( 'ID', 'events-maker' ),
+			'name'	 => __( 'Name', 'events-maker' )
 		);
 
 		$this->em_order_types = array(
-			'asc'					=> __( 'Ascending', 'events-maker' ),
-			'desc'					=> __( 'Descending', 'events-maker' )
+			'asc'	 => __( 'Ascending', 'events-maker' ),
+			'desc'	 => __( 'Descending', 'events-maker' )
 		);
 	}
 
 	/**
+	 * Display widget.
 	 * 
+	 * @param array $args
+	 * @param object $instance
 	 */
 	public function widget( $args, $instance ) {
 		$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
@@ -1333,52 +1452,58 @@ class Events_Maker_Organizers_Widget extends WP_Widget {
 		echo $html;
 	}
 
-	/**
+	/** Render widget form.
 	 * 
+	 * @param object $instance
+	 * @return mixed
 	 */
 	public function form( $instance ) {
 		$html = '
-		<p>
-			<label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
-			<input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title'] ) . '" />
-		</p>
-		<p>
-			<input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
-			<input id="' . $this->get_field_id( 'show_hierarchy' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_hierarchy' ) . '" value="" ' . checked( true, (isset( $instance['show_hierarchy'] ) ? $instance['show_hierarchy'] : $this->em_defaults['show_hierarchy'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_hierarchy' ) . '">' . __( 'Show hierarchy', 'events-maker' ) . '</label>
-		</p>
-		<p>
-			<label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
+	<p>
+	    <label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title', 'events-maker' ) . ':</label>
+	    <input id="' . $this->get_field_id( 'title' ) . '" class="widefat" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( isset( $instance['title'] ) ? $instance['title'] : $this->em_defaults['title']  ) . '" />
+	</p>
+	<p>
+	    <input id="' . $this->get_field_id( 'display_as_dropdown' ) . '" type="checkbox" name="' . $this->get_field_name( 'display_as_dropdown' ) . '" value="" ' . checked( true, (isset( $instance['display_as_dropdown'] ) ? $instance['display_as_dropdown'] : $this->em_defaults['display_as_dropdown'] ), false ) . ' /> <label for="' . $this->get_field_id( 'display_as_dropdown' ) . '">' . __( 'Display as dropdown', 'events-maker' ) . '</label><br />
+	    <input id="' . $this->get_field_id( 'show_hierarchy' ) . '" type="checkbox" name="' . $this->get_field_name( 'show_hierarchy' ) . '" value="" ' . checked( true, (isset( $instance['show_hierarchy'] ) ? $instance['show_hierarchy'] : $this->em_defaults['show_hierarchy'] ), false ) . ' /> <label for="' . $this->get_field_id( 'show_hierarchy' ) . '">' . __( 'Show hierarchy', 'events-maker' ) . '</label>
+	</p>
+	<p>
+	    <label for="' . $this->get_field_id( 'order_by' ) . '">' . __( 'Order by', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order_by' ) . '" name="' . $this->get_field_name( 'order_by' ) . '">';
 
 		foreach ( $this->em_orders as $id => $order_by ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order_by'] ) ? $instance['order_by'] : $this->em_defaults['order_by'] ), false ) . '>' . $order_by . '</option>';
 		}
 
 		$html .= '
-			</select>
-			<br />
-			<label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
-			<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
+	    </select>
+	    <br />
+	    <label for="' . $this->get_field_id( 'order' ) . '">' . __( 'Order', 'events-maker' ) . ':</label>
+	    <select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">';
 
 		foreach ( $this->em_order_types as $id => $order ) {
 			$html .= '
-				<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
+		<option value="' . esc_attr( $id ) . '" ' . selected( $id, (isset( $instance['order'] ) ? $instance['order'] : $this->em_defaults['order'] ), false ) . '>' . $order . '</option>';
 		}
 
 		$html .= '
-			</select>
-		</p>';
+	    </select>
+	</p>';
 
 		echo $html;
 	}
 
 	/**
+	 * Save widget form.
 	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// title
-		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title'] );
+		$old_instance['title'] = sanitize_text_field( isset( $new_instance['title'] ) ? $new_instance['title'] : $this->em_defaults['title']  );
 
 		// checkboxes
 		$old_instance['display_as_dropdown'] = (isset( $new_instance['display_as_dropdown'] ) ? true : false);

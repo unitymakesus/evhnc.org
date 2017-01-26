@@ -39,7 +39,7 @@ class Events_Maker_Update {
 							$this->update_1();
 
 							// update plugin version
-							update_option( 'events_maker_version', Events_Maker()->defaults['version'] );
+							update_option( 'events_maker_version', Events_Maker()->defaults['version'], false );
 						}
 					}
 
@@ -48,7 +48,7 @@ class Events_Maker_Update {
 					$this->update_1();
 
 					// update plugin version
-					update_option( 'events_maker_version', Events_Maker()->defaults['version'] );
+					update_option( 'events_maker_version', Events_Maker()->defaults['version'], false );
 				}
 
 				Events_Maker()->add_notice( __( 'Datebase was succesfully updated. Enjoy new features!', 'events-maker' ), 'updated', true );
@@ -82,7 +82,7 @@ class Events_Maker_Update {
 						$update_required = true;
 					else
 					// update plugin version
-						update_option( 'events_maker_version', Events_Maker()->defaults['version'] );
+						update_option( 'events_maker_version', Events_Maker()->defaults['version'], false );
 				}
 			}
 
@@ -102,7 +102,7 @@ class Events_Maker_Update {
 					Events_Maker()->add_notice( $update_1_html );
 				else
 				// update plugin version
-					update_option( 'events_maker_version', Events_Maker()->defaults['version'] );
+					update_option( 'events_maker_version', Events_Maker()->defaults['version'], false );
 			}
 		}
 	}

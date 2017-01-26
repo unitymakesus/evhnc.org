@@ -2,7 +2,7 @@
 /*
 Plugin Name: Events Maker
 Description: Fully featured event management system including recurring events, locations management, full calendar, iCal feed/files, google maps and more.
-Version: 1.6.12
+Version: 1.6.13
 Author: dFactory
 Author URI: http://www.dfactory.eu/
 Plugin URI: http://www.dfactory.eu/plugins/events-maker/
@@ -12,7 +12,7 @@ Text Domain: events-maker
 Domain Path: /languages
 
 Events Maker
-Copyright (C) 2013-2015, Digital Factory - info@digitalfactory.pl
+Copyright (C) 2013-2016, Digital Factory - info@digitalfactory.pl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Events_Maker' ) ) :
  * Events Maker class.
  *
  * @class Events_Maker
- * @version	1.6.12
+ * @version	1.6.13
  */
 final class Events_Maker {
 
@@ -137,7 +137,7 @@ final class Events_Maker {
 			'event_locations_rewrite_slug'	 => 'location',
 			'event_organizers_rewrite_slug'	 => 'organizer'
 		),
-		'version'		 => '1.6.12'
+		'version'		 => '1.6.13'
 	);
 
 	/**

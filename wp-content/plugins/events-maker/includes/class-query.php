@@ -335,8 +335,8 @@ class Events_Maker_Query {
 				'event_date_type'		 => 'all',
 				'event_ticket_type'		 => 'all',
 				'event_ondate'			 => '',
-				'event_show_past_events' => ( is_admin() ? true : Events_Maker()->options['general']['show_past_events'] ),
-				'event_show_occurrences' => ( is_admin() ? true : Events_Maker()->options['general']['show_occurrences'] )
+				'event_show_past_events' => is_admin() ? true : ( isset( $query->query_vars['show_past_events'] ) ? $query->query_vars['show_past_events'] : Events_Maker()->options['general']['show_past_events'] ),
+				'event_show_occurrences' => is_admin() ? true : ( isset( $query->query_vars['show_occurrences'] ) ? $query->query_vars['show_occurrences'] : Events_Maker()->options['general']['show_occurrences'] )
 			);
 
 			if ( ! empty( $query->query_vars['event_ondate'] ) ) {

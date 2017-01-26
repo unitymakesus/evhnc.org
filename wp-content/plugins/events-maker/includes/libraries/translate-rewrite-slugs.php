@@ -33,13 +33,20 @@ if ( ! class_exists( 'WPML_Translate_Rewrite_Slugs' ) ) {
 			$this->post_types = array();
 			$this->taxonomies = array();
 	
-			// check if WPML or Polylang is active
+			add_action( 'plugins_loaded', array( $this, 'pre_init' ) );
+		}
+		
+		/**
+		 * Check if WPML or Polylang is active
+		 */
+		public function pre_init() {
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	
-			if ( is_plugin_active( 'polylang/polylang.php' ) && function_exists( 'pll_default_language' ) ) {
+			if ( is_plugin_active( 'polylang/polylang.php' ) && function_exists( 'PLL' ) ) {
 				$this->plugin = 'Polylang';
+
 				add_action( 'init', array( $this, 'init' ), 20 );
-			} elseif ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			} elseif ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) && class_exists( 'SitePress' ) ) {
 				$this->plugin = 'WPML';
 				add_action( 'init', array( $this, 'init' ), 20 );
 			}
@@ -57,7 +64,7 @@ if ( ! class_exists( 'WPML_Translate_Rewrite_Slugs' ) ) {
 			require_once( plugin_dir_path( __FILE__ ) . '/translate-post-type.php' );
 	
 			$post_type_translated_slugs = apply_filters( 'wpml_translated_post_type_rewrite_slugs', array() );
-	
+
 			foreach ( $post_type_translated_slugs as $post_type => $translated_slugs ) {
 				$this->add_post_type( $post_type, $translated_slugs );
 			}
@@ -92,9 +99,9 @@ if ( ! class_exists( 'WPML_Translate_Rewrite_Slugs' ) ) {
 		 * Get available languages.
 		 */
 		private function get_languages() {
-			if ( $this->plugin === 'Polylang' ) {				
+			if ( $this->plugin === 'Polylang' && function_exists( 'PLL' ) ) {				
 				// set default language
-				$this->default_lang = pll_default_language();
+				$this->default_lang = PLL()->options['default_lang'];
 	
 				// set languages
 				$registered_languages = PLL()->model->get_languages_list();
@@ -104,7 +111,7 @@ if ( ! class_exists( 'WPML_Translate_Rewrite_Slugs' ) ) {
 						$this->languages[] = $language->slug;
 					}
 				}
-			} elseif ( $this->plugin === 'WPML' ) {
+			} elseif ( $this->plugin === 'WPML' && class_exists( 'SitePress' ) ) {
 				global $sitepress;
 				
 				// set default language
@@ -132,7 +139,7 @@ if ( ! class_exists( 'WPML_Translate_Rewrite_Slugs' ) ) {
 			$lang = '';
 	
 			if ( $this->plugin === 'Polylang' ) {
-				$language = PLL()->model->get_post_language( $post_id );
+				$language = PLL()->model->post->get_language( $post_id );
 	
 				if ( $language ) {
 					$lang = $language->slug;
@@ -162,7 +169,7 @@ if ( ! class_exists( 'WPML_Translate_Rewrite_Slugs' ) ) {
 			$lang = '';
 	
 			if ( $this->plugin === 'Polylang' ) {
-				$language = PLL()->model->get_term_language( $term_id );
+				$language = PLL()->model->term->get_language( $term_id );
 	
 				if ( $language ) {
 					$lang = $language->slug;

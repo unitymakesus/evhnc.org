@@ -12,6 +12,7 @@ class Events_Maker_Taxonomies {
 	public function __construct() {
 		// actions
 		add_action( 'after_setup_theme', array( $this, 'load_defaults' ) );
+		add_action( 'admin_init', array( $this, 'html_description_init' ) );
 		add_action( 'event-category_add_form_fields', array( $this, 'event_category_add_meta_fields' ) );
 		add_action( 'event-location_add_form_fields', array( $this, 'event_location_add_meta_fields' ) );
 		add_action( 'event-organizer_add_form_fields', array( $this, 'event_organizer_add_meta_fields' ) );
@@ -454,6 +455,138 @@ class Events_Maker_Taxonomies {
 		}
 
 		return $output;
+	}
+	
+	/**
+	 * Enable term HTML description.
+	 */
+	public function html_description_init() {
+
+		$taxonomies = apply_filters( 'em_taxonomy_html_description_taxonomies', array( 'event-category', 'event-tag', 'event-location', 'event-organizer' ) );
+
+		if ( ! empty( $taxonomies ) && is_array( $taxonomies ) ) {
+
+			if ( current_user_can( 'unfiltered_html' ) ) {
+				// remove default filters
+				remove_filter( 'pre_term_description', 'wp_filter_kses' );
+				remove_filter( 'term_description', 'wp_kses_data' );
+				// and sanitize as post
+				add_filter( 'pre_term_description', 'wp_filter_post_kses' );
+				add_filter( 'term_description', 'wp_kses_post' );
+				// modify column description content
+				add_filter( 'get_terms', array( $this, 'html_description_column_get_terms' ), 10, 2 );
+			}
+
+			foreach ( $taxonomies as $taxonomy ) {
+				add_action( $taxonomy . '_add_form_fields', array( $this, 'html_description_add_fields' ) );
+				add_action( $taxonomy . '_edit_form_fields', array( $this, 'html_description_edit_fields' ), 10, 2 );
+				add_action( 'admin_head-edit-tags.php', array( $this, 'html_description_editor_style' ) );
+				add_action( 'admin_head-term.php', array( $this, 'html_description_editor_style' ) );
+			}
+		}
+	}
+
+	/**
+	 * Add term HTML.
+	 * 
+	 * @param string $taxonomy
+	 */
+	public function html_description_add_fields( $taxonomy ) {
+
+		$settings = apply_filters( 'em_taxonomy_html_editor_settings', array(
+			'quicktags'		 => array(
+				'buttons' => 'em,strong, link'
+			),
+			'textarea_name'	 => 'description',
+			'quicktags'		 => true,
+			'tinymce'		 => true,
+			'media_buttons'	 => false,
+			'editor_css'	 => '<style>#wp-html-tag-description-editor-container .wp-editor-area { height: 200px; }</style>'
+		) );
+		?>
+		<div class="form-field term-html-description-wrap">
+			<label for="tag-description"><?php echo __( 'Description' ); ?></label>
+			<?php wp_editor( '', 'html-tag-description', $settings ); ?>
+			<p class="description"><?php _e( 'The description is not prominent by default; however, some themes may show it.' ); ?></p>
+			<script type="text/javascript">
+				// remove the non-html field
+				jQuery( '.term-html-description-wrap' ).detach().insertAfter( '.term-description-wrap' );
+				jQuery( '.term-description-wrap' ).remove();
+
+				jQuery( function () {
+					// trigger save
+					jQuery( '#addtag' ).on( 'mousedown', '#submit', function () {
+					tinyMCE.triggerSave();
+					} );
+				} );
+			</script>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Edit term HTML
+	 * 
+	 * @param object $term
+	 * @param string $taxonomy
+	 */
+	public function html_description_edit_fields( $term, $taxonomy ) {
+
+		$settings = apply_filters( 'em_taxonomy_html_editor_settings', array(
+			'quicktags'		 => array( 'buttons' => 'em,strong,link' ),
+			'textarea_name'	 => 'description',
+			'quicktags'		 => true,
+			'tinymce'		 => true,
+			'media_buttons'	 => false,
+			'editor_css'	 => '<style>#wp-html-description-editor-container .wp-editor-area { height: 300px; }</style>'
+		) );
+		?>
+		<tr class="form-field term-html-description-wrap">
+			<th scope="row" valign="top"><label for="description"><?php echo __( 'Description' ); ?></label></th>
+			<td><?php wp_editor( html_entity_decode( stripslashes( $term->description ), ENT_COMPAT, 'UTF-8' ), 'html-tag-description', $settings ); ?>
+				<span class="description"><?php _e( 'The description is not prominent by default; however, some themes may show it.' ); ?></span>
+			</td>
+			<script type="text/javascript">
+				// remove the non-html field
+				jQuery( '.term-html-description-wrap' ).detach().insertAfter( '.term-description-wrap' );
+				jQuery( '.term-description-wrap' ).remove();
+			</script>
+		</tr>		
+		<?php
+	}
+	
+	/**
+	 * Adjust admin column description.
+	 * 
+	 * @global string $pagenow
+	 * @param array $terms
+	 * @param string $taxonomy
+	 * @return array
+	 */
+	public function html_description_column_get_terms( $terms, $taxonomy ) {
+		global $pagenow;
+		
+		$taxonomies = apply_filters( 'em_taxonomy_html_description_taxonomies', array( 'event-category', 'event-tag', 'event-location', 'event-organizer' ) );
+		
+		if ( $pagenow !== 'edit-tags.php' || ! isset( $taxonomy[0] ) || ! in_array( $taxonomy[0], $taxonomies ) )
+			return $terms;
+		
+		if ( ! empty( $terms ) ) {
+			foreach ( $terms as $index => $term ) {
+				if ( is_object( $term ) )
+					$terms[$index]->description = apply_filters( 'em_taxonomy_html_description_column_content', wp_trim_words( wp_strip_all_tags( $term->description ), 20, null ), $term->description );
+			}
+		}
+		return $terms;
+	}
+	
+	/**
+	 * Fix editor buttons.
+	 * 
+	 * @return mixed
+	 */
+	function html_description_editor_style() {
+		echo '<style>.quicktags-toolbar input { width: auto; } #html-tag-description { border: none; } #wp-html-tag-description-wrap { width: 95%; }</style>';
 	}
 
 }

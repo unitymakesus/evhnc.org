@@ -44,15 +44,14 @@ class WPML_Translate_Taxonomy {
 			$force_lang = true;
 			
 			if ( $this->plugin === 'Polylang' ) {
-				global $polylang;
 
 				// if "Hide URL language information for default language" option is set to true the rules has to be different for the default language.
-				if ( $polylang->options['hide_default'] && $lang == pll_default_language() ) {
+				if ( PLL()->options['hide_default'] && $lang == pll_default_language() ) {
 					$is_default = true;
 				}
 				
 				// if "The language is set from content" is enabled
-				$force_lang = (bool) $polylang->options['force_lang'];
+				$force_lang = (bool) PLL()->options['force_lang'];
 			} elseif ( $this->plugin === 'WPML' ) {
 				global $sitepress;
 
@@ -87,10 +86,9 @@ class WPML_Translate_Taxonomy {
 						}
 	
 						if ( $this->plugin === 'Polylang' ) {
-							global $polylang;
-							
+
 							// shift the matches up cause "lang" will be the first
-							if ( $polylang->options['rewrite'] == 0 && ! ( $polylang->options['hide_default'] && $lang == $this->default_lang ) ) {
+							if ( PLL()->options['rewrite'] == 0 && ! ( PLL()->options['hide_default'] && $lang == $this->default_lang ) ) {
 								// if "Keep /language/ in pretty permalinks" is enabled
 								$translated_rules['language/' . '(' . $lang . ')/' . str_replace( trim( $taxonomy_rewrite_slug, '/' ), $translated_slug, $rule_key )] = str_replace(
 									array( '[8]', '[7]', '[6]', '[5]', '[4]', '[3]', '[2]', '[1]' ), array( '[9]', '[8]', '[7]', '[6]', '[5]', '[4]', '[3]', '[2]' ), $rule_value

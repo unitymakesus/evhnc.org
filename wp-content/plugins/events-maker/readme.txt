@@ -1,10 +1,10 @@
-=== Events Maker by dFactory===
+=== Events Maker by dFactory ===
 Contributors: dfactory
 Donate link: http://www.dfactory.eu/
 Tags: event, event categories, events management, event management, events manager, event manager, event organizer, events calendar, events maker, google map, map, locations, organizers, widget, attendance, attendee, Booking, calendar, event registration, ticket, tickets, ticketing, bookings
 Requires at least: 4.0
-Tested up to: 4.6
-Stable tag: 1.6.12
+Tested up to: 4.7.1
+Stable tag: 1.6.13
 License: MIT License
 License URI: http://opensource.org/licenses/MIT
 
@@ -73,6 +73,7 @@ Your favorite theme's not listed here? Ask the theme developer to make it work w
 * RSS feed support
 * Customizeable template files
 * Events sorting
+* HTML description for event taxonomies
 * Google Rich Snippets ready
 * 7 Events widgets
 * Multiple custom functions
@@ -111,6 +112,14 @@ A. Chances are, someone else has asked it. Check out the support forum at: http:
 6. screenshot-6.png
 
 == Changelog ==
+
+= 1.6.13 =
+* New: HTML description for event taxonomies
+* Tweak: Show past events in the calendar by default
+* Tweak: Locations and Organizers list pages make use of the past events option
+* Fix: em_get_events() overriding parameters
+* Fix: Polylang rewrite rules translation
+* Fix: Polylang deprecated method notices
 
 = 1.6.12 =
 * Fix: Google Maps support, now requires API key
@@ -374,8 +383,5 @@ Initial release
 
 == Upgrade Notice ==
 
-= 1.6.12 =
-* Fix: Google Maps support, now requires API key
-* Fix: Calendar query transient for multiple queries
-* Fix: Javascript issue with datepicker
-* Fix: [em-events] shortcode pagination
+= 1.6.13 =
+New: HTML description for event taxonomies, Tweak: Show past events in the calendar by default, Fix: Polylang issues, Fix: em_get_events() overriding parameters

@@ -67,10 +67,14 @@ html, body {
   font-size: 18px;
 }
 
+h1 {
+  text-transform: none;
+}
+
 #content-pro {
   font-size: 20px;
   font-family: "Unna", serif;
-  color: rgba(15, 14, 7, 0.85);
+  color: rgb(15, 14, 7);
 }
 
 #content-pro a {
@@ -81,6 +85,7 @@ html, body {
   font-family: 'Sansita', sans-serif;
   font-size: 36px;
   color: #3A3F69;
+  text-transform: none;
 }
 
 #content-pro h3 {
@@ -108,6 +113,10 @@ html, body {
   color: #3A3F69;
 }
 
+#content-pro .progression-studios-default-program-single {
+  margin-bottom: 3em;
+}
+
 ul, ol {
   margin-left: 24px;
 }
@@ -118,6 +127,19 @@ ul, ol {
 
 #habitat-progression-header-top#habitat-progression-header-top {
   border-bottom: none;
+}
+
+#progression-studios-header-position {
+  position: relative;
+}
+
+#progression-studios-header-position::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .6);
 }
 
 .sf-menu.sf-menu a {
@@ -164,6 +186,14 @@ ul, ol {
 
 .vertical-center img {
   vertical-align: middle;
+}
+
+.progression-studios-default-program-single .progression-studios-program-image {
+  width: 25%;
+}
+
+.progression-program-content-single {
+  width: 73%;
 }
 
 .mlp_language_box ul {
